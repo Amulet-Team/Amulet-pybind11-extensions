@@ -19,7 +19,7 @@ auto make_iterator(T&& obj, Extra&&... extra) -> pybind11_extensions::collection
             .def(
                 "__iter__",
                 [](
-                    pybind11_extensions::builtins::PyObjectCpp<T>& s) -> pybind11_extensions::builtins::PyObjectCpp<T>& { return s; })
+                    pybind11_extensions::PyObjectCpp<T>& s) -> pybind11_extensions::PyObjectCpp<T>& { return s; })
             .def(
                 "__next__",
                 [](T& s) -> decltype(obj.next()) {

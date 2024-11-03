@@ -8,6 +8,6 @@
 
 namespace pybind11_extensions {
     namespace types {
-        using NotImplementedType = pybind11_extensions::builtins::PyObjectStr<"types.NotImplementedType">;
+        using NotImplementedType = pybind11_extensions::PyObjectStr<"types.NotImplementedType">;
     }
 }
