@@ -35,8 +35,8 @@ namespace pybind11_extensions {
 
         // __path__ is not defined on the root module until after the pybind11 module constructor finishes.
         // This function patches in the root __path__ to enable def_subpackage to access it.
-        inline void set_package_path(py::module m, std::string module_name) {
-            m.attr("__path__") = py::module::import("importlib.util").attr("find_spec")(module_name).attr("submodule_search_locations");
+        inline void set_package_path(pybind11::module m, std::string module_name) {
+            m.attr("__path__") = pybind11::module::import("importlib.util").attr("find_spec")(module_name).attr("submodule_search_locations");
         }
     }
 }
