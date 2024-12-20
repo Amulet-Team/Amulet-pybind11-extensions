@@ -7,6 +7,36 @@
 // Note that these are handled in the same way as py::object thus there is no type validation.
 
 namespace pybind11_extensions {
+template <typename T = pybind11::object>
+class Iterator : public pybind11::iterator {
+public:
+    using pybind11::iterator::iterator;
+
+    T operator*() const
+    {
+        return pybind11::iterator::operator*().cast<T>();
+    }
+
+    std::unique_ptr<T> operator->() const
+    {
+        return std::make_unique<T>(operator*());
+    }
+};
+
+template <typename T = pybind11::object>
+class Iterable : public pybind11::iterable {
+public:
+    using pybind11::iterable::iterable;
+    Iterator<T> begin() const
+    {
+        return Iterator<T>(pybind11::iterable::begin());
+    }
+    Iterator<T> end() const
+    {
+        return Iterator<T>(pybind11::iterable::end());
+    }
+};
+
 namespace collections {
     namespace abc {
         template <typename T>
@@ -59,6 +89,26 @@ namespace detail {
     template <typename T>
     struct handle_type_name<pybind11_extensions::collections::abc::Iterator<T>> {
         static constexpr auto name = const_name("collections.abc.Iterator[") + make_caster<T>::name + const_name("]");
+    };
+
+    template <>
+    struct handle_type_name<pybind11_extensions::Iterator<pybind11::object>> {
+        static constexpr auto name = const_name("collections.abc.Iterator");
+    };
+
+    template <typename T>
+    struct handle_type_name<pybind11_extensions::Iterator<T>> {
+        static constexpr auto name = const_name("collections.abc.Iterator[") + make_caster<T>::name + const_name("]");
+    };
+
+    template <>
+    struct handle_type_name<pybind11_extensions::Iterable<pybind11::object>> {
+        static constexpr auto name = const_name("collections.abc.Iterable");
+    };
+
+    template <typename T>
+    struct handle_type_name<pybind11_extensions::Iterable<T>> {
+        static constexpr auto name = const_name("collections.abc.Iterable[") + make_caster<T>::name + const_name("]");
     };
 
     template <typename T>
