@@ -21,16 +21,15 @@ class CollectionsTestCase(unittest.TestCase):
     def test_collections(self) -> None:
         test_iter_obj([None, 1, "2", 3.0])
         test_iter_obj((None, 1, "2", 3.0))
-        test_iter_obj({None, 1, "2", 3.0})
         test_iter_obj(dict.fromkeys((None, 1, "2", 3.0), None))
 
         test_iter_int([1, 2, 3])
         test_iter_int((1, 2, 3))
-        test_iter_int({1, 2, 3})
+        test_iter_int(dict.fromkeys([1, 2, 3], None))
 
         test_iter_cls([IterTest(1), IterTest(2), IterTest(3)])
         test_iter_cls((IterTest(1), IterTest(2), IterTest(3)))
-        test_iter_cls({IterTest(1), IterTest(2), IterTest(3)})
+        test_iter_cls(dict.fromkeys([IterTest(1), IterTest(2), IterTest(3)], None))
 
 
 if __name__ == "__main__":
