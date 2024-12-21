@@ -7,7 +7,7 @@
 // Note that these are handled in the same way as py::object thus there is no type validation.
 
 namespace pybind11_extensions {
-template <typename T = pybind11::object>
+template <typename T>
 class Iterator : public pybind11::iterator {
 public:
     using pybind11::iterator::iterator;
@@ -23,7 +23,7 @@ public:
     }
 };
 
-template <typename T = pybind11::object>
+template <typename T>
 class Iterable : public pybind11::iterable {
 public:
     using pybind11::iterable::iterable;
