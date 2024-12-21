@@ -14,7 +14,7 @@ public:
 
     T operator*() const
     {
-        return pybind11::iterator::operator*().cast<T>();
+        return pybind11::iterator::operator*().template cast<T>();
     }
 
     std::unique_ptr<T> operator->() const
