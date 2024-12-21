@@ -24,7 +24,7 @@ def main():
     if subprocess.run(
         [
             "cmake",
-            *[platform_args],
+            *platform_args,
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-Dpybind11_DIR={pybind11.get_cmake_dir().replace(os.sep, '/')}",
             f"-Dpybind11_extensions_DIR={pybind11_extensions.__path__[0].replace(os.sep, '/')}",
