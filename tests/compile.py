@@ -12,13 +12,19 @@ def main():
     if os.path.isdir("build/CMakeFiles"):
         shutil.rmtree("build/CMakeFiles")
 
+    platform_args = []
+    if sys.platform == "win32":
+        platform_args.extend(["-G", "Visual Studio 17 2022"])
+        if sys.maxsize > 2 ** 32:
+            platform_args.extend(["-A", "x64"])
+        else:
+            platform_args.extend(["-A", "Win32"])
+        platform_args.extend(["-T", "v143"])
+
     if subprocess.run(
         [
             "cmake",
-            "-G",
-            "Visual Studio 17 2022",
-            "-A",
-            "x64",
+            *[platform_args],
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-Dpybind11_DIR={pybind11.get_cmake_dir().replace(os.sep, '/')}",
             f"-Dpybind11_extensions_DIR={pybind11_extensions.__path__[0].replace(os.sep, '/')}",
