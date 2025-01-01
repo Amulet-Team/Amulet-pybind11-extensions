@@ -38,6 +38,11 @@ public:
         return obj().template cast<T>();
     }
 
+    std::unique_ptr<T> operator->() const
+    {
+        return std::make_unique<T>(obj().template cast<T>());
+    }
+
     static Iterator sentinel() { return {}; }
 
     friend bool operator==(const Iterator& a, const Iterator& b) { return a.obj().ptr() == b.obj().ptr(); }
