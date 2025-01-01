@@ -35,7 +35,7 @@ public:
 
     T operator*() const
     {
-        return obj().cast<T>();
+        return obj().typename cast<T>();
     }
 
     static Iterator sentinel() { return {}; }
