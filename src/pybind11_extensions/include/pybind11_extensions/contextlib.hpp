@@ -18,9 +18,17 @@ namespace contextlib {
 
     namespace detail {
         template <typename T, typename ExitT = std::optional<bool>>
-        struct ContextManager {
+        class ContextManager {
+        public:
             std::function<T()> enter;
             std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit;
+            ContextManager(
+                std::function<T()> enter,
+                std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit)
+                : enter(enter)
+                , exit(exit)
+            {
+            }
         };
     }
 
