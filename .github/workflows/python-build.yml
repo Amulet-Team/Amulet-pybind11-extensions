@@ -1,24 +1,19 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Unittests
+name: Build
 
 on:
-  push:
-    branches:
-      - master
-      - main
-      - '[0-9]+.[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+'
-  pull_request:
+  release:
+    types: [published]
 
 jobs:
-  unittests:
+  deploy:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ '3.11', '3.12', '3.13' ]
-        os: [ windows-latest, macos-latest, ubuntu-latest ]
+        python-version: [ '3.13' ]
+        os: [ ubuntu-latest ]
 
     runs-on: ${{ matrix.os }}
     defaults:
@@ -38,8 +33,15 @@ jobs:
       run: |
         pip cache purge
         python -m pip install --upgrade pip
-        pip install .[dev]
-        python tests/compile.py
+        pip install build twine
 
-    - name: Test with unittest
-      run: python -m unittest discover -v -s tests
+    - name: Build Amulet-pybind11-extensions
+      run: |
+        python -m build .
+
+    - name: Publish Amulet-pybind11-extensions
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.AMULET_PYBIND11_EXTENSIONS_PYPI_PASSWORD }}
+      run: |
+        twine upload dist/* --skip-existing

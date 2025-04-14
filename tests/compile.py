@@ -6,6 +6,7 @@ import os
 import pybind11
 import pybind11_extensions
 
+
 def main():
     os.chdir(os.path.dirname(__file__))
 
@@ -15,7 +16,7 @@ def main():
     platform_args = []
     if sys.platform == "win32":
         platform_args.extend(["-G", "Visual Studio 17 2022"])
-        if sys.maxsize > 2 ** 32:
+        if sys.maxsize > 2**32:
             platform_args.extend(["-A", "x64"])
         else:
             platform_args.extend(["-A", "Win32"])
@@ -44,5 +45,5 @@ def main():
         raise RuntimeError("Error installing pybind11_extensions")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
