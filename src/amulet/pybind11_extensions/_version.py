@@ -53,7 +53,7 @@ def get_config() -> VersioneerConfig:
     cfg.style = "pep440"
     cfg.tag_prefix = ""
     cfg.parentdir_prefix = "amulet_pybind11_extensions-"
-    cfg.versionfile_source = "src/amulet/pybind11/_version.py"
+    cfg.versionfile_source = "src/amulet/pybind11_extensions/_version.py"
     cfg.verbose = False
     return cfg
 
