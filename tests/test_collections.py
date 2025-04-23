@@ -1,6 +1,6 @@
 import unittest
 
-from tests.collections import test_iter_obj, test_iter_int, IterTest, test_iter_cls
+from _test_collections import test_iter_obj, test_iter_int, IterTest, test_iter_cls
 
 
 class CollectionsTestCase(unittest.TestCase):
@@ -14,7 +14,7 @@ class CollectionsTestCase(unittest.TestCase):
             test_iter_int.__doc__,
         )
         self.assertEqual(
-            "test_iter_cls(arg0: collections.abc.Iterable[tests.collections.IterTest]) -> collections.abc.Iterable[tests.collections.IterTest]\n",
+            "test_iter_cls(arg0: collections.abc.Iterable[_test_collections.IterTest]) -> collections.abc.Iterable[_test_collections.IterTest]\n",
             test_iter_cls.__doc__,
         )
 

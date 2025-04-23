@@ -25,9 +25,9 @@ function(add_text_ext name)
     pybind11_add_module(${name})
     target_link_libraries(${name} PRIVATE amulet_pybind11_extensions)
     target_compile_definitions(${name} PRIVATE PYBIND11_DETAILED_ERROR_MESSAGES)
-    target_sources(${name} PRIVATE test_${name}.cpp)
+    target_sources(${name} PRIVATE ${name}.py.cpp)
     install(TARGETS ${name} DESTINATION ".")
 endfunction()
 
 # Add python extensions
-add_text_ext(collections)
+add_text_ext(_test_collections)

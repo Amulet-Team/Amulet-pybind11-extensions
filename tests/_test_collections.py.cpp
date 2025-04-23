@@ -23,7 +23,7 @@ public:
         throw std::runtime_error("Test failed. " #condition); \
     }
 
-PYBIND11_MODULE(collections, m)
+PYBIND11_MODULE(_test_collections, m)
 {
     m.def("test_iter_obj", [](pyext::Iterable<py::object> iterable) {
         for (const py::object& obj : iterable) {
