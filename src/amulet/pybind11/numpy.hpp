@@ -8,14 +8,16 @@
 // See pybind/pybind11/pull/5212
 
 
-namespace pybind11_extensions {
+namespace Amulet { {
+namespace pybind11 {
     namespace numpy {
         template <typename T, int ExtraFlags = pybind11::array::forcecast>
         class array_t : public pybind11::array_t<T, ExtraFlags> {
             using pybind11::array_t<T, ExtraFlags>::array_t;
         };
     }
-}
+} // namespace pybind11
+} // namespace Amulet
 
 
 namespace pybind11 {

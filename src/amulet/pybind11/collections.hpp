@@ -9,7 +9,8 @@
 // This allows C++ functions to accept or return python objects that match the collection.abc classes.
 // Note that these are handled in the same way as py::object thus there is no type validation.
 
-namespace pybind11_extensions {
+namespace Amulet { {
+namespace pybind11 {
 
 template <typename T>
 class Iterator : public pybind11::object {
@@ -139,8 +140,9 @@ namespace collections {
             using object::object;
         };
     }
-}
-}
+} // namespace collections
+} // namespace pybind11
+} // namespace Amulet
 
 namespace pybind11 {
 namespace detail {

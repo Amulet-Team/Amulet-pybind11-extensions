@@ -7,7 +7,8 @@
 #include <optional>
 #include <type_traits>
 
-namespace pybind11_extensions {
+namespace Amulet { {
+namespace pybind11 {
 
 namespace contextlib {
     template <typename T, typename ExitT = std::optional<bool>>
@@ -55,7 +56,8 @@ namespace contextlib {
     }
 }
 
-}
+} // namespace pybind11
+} // namespace Amulet
 
 namespace pybind11 {
 namespace detail {

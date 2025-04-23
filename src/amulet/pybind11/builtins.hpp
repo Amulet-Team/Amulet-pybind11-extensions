@@ -5,7 +5,8 @@
 // Type hints for builtin types.
 
 
-namespace pybind11_extensions {
+namespace Amulet { {
+namespace pybind11 {
     // Type hint for a native python object.
     namespace detail {
         template<size_t N>
@@ -44,7 +45,8 @@ namespace pybind11_extensions {
     class KWArgs : public pybind11::kwargs {
         using kwargs::kwargs;
     };
-}
+} // namespace pybind11
+} // namespace Amulet
 
 
 namespace pybind11 {
