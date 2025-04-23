@@ -6,8 +6,8 @@
 #include <pybind11/pybind11.h>
 
 
-namespace Amulet { {
-namespace pybind11 {
+namespace Amulet {
+namespace pybind11_extensions {
     namespace detail {
         inline void def_package_path(pybind11::module m_parent, pybind11::module m, std::string name) {
             pybind11::list paths;
@@ -38,5 +38,5 @@ namespace pybind11 {
     inline void set_package_path(pybind11::module m, std::string module_name) {
         m.attr("__path__") = pybind11::module::import("importlib.util").attr("find_spec")(module_name).attr("submodule_search_locations");
     }
-} // namespace pybind11
+} // namespace pybind11_extensions
 } // namespace Amulet

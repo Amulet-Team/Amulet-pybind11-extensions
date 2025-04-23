@@ -7,6 +7,7 @@
 #include <amulet/pybind11/collections.hpp>
 
 namespace py = pybind11;
+namespace pyext = Amulet::pybind11_extensions;
 
 class IterTest {
 public:
@@ -24,7 +25,7 @@ public:
 
 PYBIND11_MODULE(collections, m)
 {
-    m.def("test_iter_obj", [](pybind11_extensions::Iterable<py::object> iterable) {
+    m.def("test_iter_obj", [](pyext::Iterable<py::object> iterable) {
         for (const py::object& obj : iterable) {
             std::cout << obj.attr("__repr__")().cast<std::string>() << std::endl;
         }
@@ -48,7 +49,7 @@ PYBIND11_MODULE(collections, m)
         ENSURE(it == iterable.end())
         return iterable;
     });
-    m.def("test_iter_int", [](pybind11_extensions::Iterable<int> iterable) {
+    m.def("test_iter_int", [](pyext::Iterable<int> iterable) {
         for (const int& obj : iterable) {
             std::cout << obj << std::endl;
         }
@@ -68,7 +69,7 @@ PYBIND11_MODULE(collections, m)
     py::class_<IterTest> PyIterTest(m, "IterTest");
     PyIterTest.def(py::init<int>());
     PyIterTest.def_readwrite("value", &IterTest::value);
-    m.def("test_iter_cls", [](pybind11_extensions::Iterable<IterTest> iterable) {
+    m.def("test_iter_cls", [](pyext::Iterable<IterTest> iterable) {
         for (const IterTest& obj : iterable) {
             std::cout << obj.value << std::endl;
         }

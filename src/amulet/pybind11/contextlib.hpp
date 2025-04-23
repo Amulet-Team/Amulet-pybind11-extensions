@@ -7,8 +7,8 @@
 #include <optional>
 #include <type_traits>
 
-namespace Amulet { {
-namespace pybind11 {
+namespace Amulet {
+namespace pybind11_extensions {
 
 namespace contextlib {
     template <typename T, typename ExitT = std::optional<bool>>
@@ -56,13 +56,13 @@ namespace contextlib {
     }
 }
 
-} // namespace pybind11
+} // namespace pybind11_extensions
 } // namespace Amulet
 
 namespace pybind11 {
 namespace detail {
     template <typename T, typename ExitT>
-    struct handle_type_name<pybind11_extensions::contextlib::ContextManager<T, ExitT>> {
+    struct handle_type_name<Amulet::pybind11_extensions::contextlib::ContextManager<T, ExitT>> {
         static constexpr auto name = const_name("contextlib.AbstractContextManager[")
             + make_caster<std::conditional_t<std::is_same_v<void, T>, pybind11::none, T>>::name
             + const_name(", ") + make_caster<ExitT>::name + const_name("]");

@@ -9,8 +9,8 @@
 // This allows C++ functions to accept or return python objects that match the collection.abc classes.
 // Note that these are handled in the same way as py::object thus there is no type validation.
 
-namespace Amulet { {
-namespace pybind11 {
+namespace Amulet {
+namespace pybind11_extensions {
 
 template <typename T>
 class Iterator : public pybind11::object {
@@ -141,69 +141,69 @@ namespace collections {
         };
     }
 } // namespace collections
-} // namespace pybind11
+} // namespace pybind11_extensions
 } // namespace Amulet
 
 namespace pybind11 {
 namespace detail {
     template <typename T>
-    struct handle_type_name<pybind11_extensions::collections::abc::Iterator<T>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::Iterator<T>> {
         static constexpr auto name = const_name("collections.abc.Iterator[") + make_caster<T>::name + const_name("]");
     };
 
     template <>
-    struct handle_type_name<pybind11_extensions::Iterator<pybind11::object>> {
+    struct handle_type_name<Amulet::pybind11_extensions::Iterator<pybind11::object>> {
         static constexpr auto name = const_name("collections.abc.Iterator");
     };
 
     template <typename T>
-    struct handle_type_name<pybind11_extensions::Iterator<T>> {
+    struct handle_type_name<Amulet::pybind11_extensions::Iterator<T>> {
         static constexpr auto name = const_name("collections.abc.Iterator[") + make_caster<T>::name + const_name("]");
     };
 
     template <typename T>
-    struct handle_type_name<pybind11_extensions::collections::abc::Iterable<T>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::Iterable<T>> {
         static constexpr auto name = const_name("collections.abc.Iterable[") + make_caster<T>::name + const_name("]");
     };
 
     template <>
-    struct handle_type_name<pybind11_extensions::Iterable<pybind11::object>> {
+    struct handle_type_name<Amulet::pybind11_extensions::Iterable<pybind11::object>> {
         static constexpr auto name = const_name("collections.abc.Iterable");
     };
 
     template <typename T>
-    struct handle_type_name<pybind11_extensions::Iterable<T>> {
+    struct handle_type_name<Amulet::pybind11_extensions::Iterable<T>> {
         static constexpr auto name = const_name("collections.abc.Iterable[") + make_caster<T>::name + const_name("]");
     };
 
     template <typename T>
-    struct handle_type_name<pybind11_extensions::collections::abc::Sequence<T>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::Sequence<T>> {
         static constexpr auto name = const_name("collections.abc.Sequence[") + make_caster<T>::name + const_name("]");
     };
 
     template <typename K, typename V>
-    struct handle_type_name<pybind11_extensions::collections::abc::Mapping<K, V>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::Mapping<K, V>> {
         static constexpr auto name = const_name("collections.abc.Mapping[") + make_caster<K>::name + const_name(", ") + make_caster<V>::name + const_name("]");
     };
 
     template <typename K, typename V>
-    struct handle_type_name<pybind11_extensions::collections::abc::MutableMapping<K, V>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::MutableMapping<K, V>> {
         static constexpr auto name = const_name("collections.abc.MutableMapping[") + make_caster<K>::name + const_name(", ")
             + make_caster<V>::name + const_name("]");
     };
 
     template <typename K>
-    struct handle_type_name<pybind11_extensions::collections::abc::KeysView<K>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::KeysView<K>> {
         static constexpr auto name = const_name("collections.abc.KeysView[") + make_caster<K>::name + const_name("]");
     };
 
     template <typename V>
-    struct handle_type_name<pybind11_extensions::collections::abc::ValuesView<V>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::ValuesView<V>> {
         static constexpr auto name = const_name("collections.abc.ValuesView[") + make_caster<V>::name + const_name("]");
     };
 
     template <typename K, typename V>
-    struct handle_type_name<pybind11_extensions::collections::abc::ItemsView<K, V>> {
+    struct handle_type_name<Amulet::pybind11_extensions::collections::abc::ItemsView<K, V>> {
         static constexpr auto name = const_name("collections.abc.ItemsView[") + make_caster<K>::name + const_name(", ")
             + make_caster<V>::name + const_name("]");
     };

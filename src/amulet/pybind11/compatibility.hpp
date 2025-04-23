@@ -10,8 +10,8 @@ static std::string get_version_top(std::string version)
     return version.substr(0, version.find('.', version.find('.') + 1));
 }
 
-namespace Amulet { {
-namespace pybind11 {
+namespace Amulet {
+namespace pybind11_extensions {
 
 void init_compiler_config(pybind11::module m)
 {
@@ -51,5 +51,5 @@ void check_compatibility(pybind11::module a, pybind11::module b)
     }
 }
 
-} // namespace pybind11
+} // namespace pybind11_extensions
 } // namespace Amulet

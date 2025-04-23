@@ -6,10 +6,10 @@
 // This is used as a return in comparison operators.
 
 
-namespace Amulet { {
-namespace pybind11 {
+namespace Amulet {
+namespace pybind11_extensions {
     namespace types {
         using NotImplementedType = pybind11_extensions::PyObjectStr<"types.NotImplementedType">;
     }
-} // namespace pybind11
+} // namespace pybind11_extensions
 } // namespace Amulet

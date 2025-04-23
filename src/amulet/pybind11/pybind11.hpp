@@ -4,8 +4,8 @@
 #include "builtins.hpp"
 #include "collections.hpp"
 
-namespace Amulet { {
-namespace pybind11 {
+namespace Amulet {
+namespace pybind11_extensions {
 
 // Create a python iterator around a C++ class that implements method next()
 // Next should throw py::stop_iteration() to signal the end of the iterator.
@@ -32,5 +32,5 @@ auto make_iterator(T&& obj, Extra&&... extra) -> pybind11_extensions::collection
     return pybind11::cast(std::move(obj));
 }
 
-} // namespace pybind11
+} // namespace pybind11_extensions
 } // namespace Amulet
