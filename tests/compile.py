@@ -4,7 +4,7 @@ import shutil
 import os
 
 import pybind11
-import pybind11_extensions
+import amulet.pybind11
 
 
 def main():
@@ -28,21 +28,21 @@ def main():
             *platform_args,
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-Dpybind11_DIR={pybind11.get_cmake_dir().replace(os.sep, '/')}",
-            f"-Dpybind11_extensions_DIR={pybind11_extensions.__path__[0].replace(os.sep, '/')}",
+            f"-Damulet_pybind11_extensions_DIR={amulet.pybind11.__path__[0].replace(os.sep, '/')}",
             f"-DCMAKE_INSTALL_PREFIX={os.path.dirname(__file__)}",
             "-B",
             "build",
         ]
     ).returncode:
-        raise RuntimeError("Error configuring pybind11_extensions")
+        raise RuntimeError("Error configuring amulet_pybind11_extensions")
     if subprocess.run(
         ["cmake", "--build", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing pybind11_extensions")
+        raise RuntimeError("Error installing amulet_pybind11_extensions")
     if subprocess.run(
         ["cmake", "--install", "build", "--config", "RelWithDebInfo"]
     ).returncode:
-        raise RuntimeError("Error installing pybind11_extensions")
+        raise RuntimeError("Error installing amulet_pybind11_extensions")
 
 
 if __name__ == "__main__":

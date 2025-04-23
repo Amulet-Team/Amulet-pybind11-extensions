@@ -4,7 +4,7 @@
 
 #include <pybind11/pybind11.h>
 
-#include <pybind11_extensions/collections.hpp>
+#include <amulet/pybind11/collections.hpp>
 
 namespace py = pybind11;
 

@@ -52,8 +52,8 @@ def get_config() -> VersioneerConfig:
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "pybind11_extensions-"
-    cfg.versionfile_source = "src/pybind11_extensions/_version.py"
+    cfg.parentdir_prefix = "amulet_pybind11_extensions-"
+    cfg.versionfile_source = "src/amulet/pybind11/_version.py"
     cfg.verbose = False
     return cfg
 
