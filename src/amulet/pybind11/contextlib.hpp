@@ -9,7 +9,6 @@
 
 namespace Amulet {
 namespace pybind11_extensions {
-
 namespace contextlib {
     template <typename T, typename ExitT = std::optional<bool>>
     class ContextManager : public pybind11::object {
@@ -54,8 +53,7 @@ namespace contextlib {
         }
         return pybind11::cast(ContextManagerT(enter, exit));
     }
-}
-
+} // namespace contextlib
 } // namespace pybind11_extensions
 } // namespace Amulet
 
