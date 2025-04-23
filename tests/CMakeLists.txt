@@ -30,4 +30,5 @@ function(add_text_ext name)
 endfunction()
 
 # Add python extensions
+add_text_ext(_test_builtins)
 add_text_ext(_test_collections)
