@@ -13,7 +13,7 @@ namespace pybind11_extensions {
         pybind11::return_value_policy Policy = pybind11::return_value_policy::automatic,
         typename Iterator,
         typename... Extra>
-    auto make_iterator(Iterator it, Extra&&... extra) -> pybind11_extensions::collections::abc::Iterator<decltype(it.next())>
+    auto make_iterator(Iterator it, Extra&&... extra) -> pybind11_extensions::collections::Iterator<decltype(it.next())>
     {
         if (!pybind11::detail::get_type_info(typeid(Iterator), false)) {
             pybind11::class_<Iterator>(pybind11::handle(), "iterator", pybind11::module_local())

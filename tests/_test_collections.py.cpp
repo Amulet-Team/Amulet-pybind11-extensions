@@ -25,7 +25,7 @@ public:
 
 PYBIND11_MODULE(_test_collections, m)
 {
-    m.def("test_iter_obj", [](pyext::Iterable<py::object> iterable) {
+    m.def("test_iter_obj", [](pyext::collections::Iterable<py::object> iterable) {
         for (const py::object& obj : iterable) {
             std::cout << obj.attr("__repr__")().cast<std::string>() << std::endl;
         }
@@ -49,7 +49,7 @@ PYBIND11_MODULE(_test_collections, m)
         ENSURE(it == iterable.end())
         return iterable;
     });
-    m.def("test_iter_int", [](pyext::Iterable<int> iterable) {
+    m.def("test_iter_int", [](pyext::collections::Iterable<int> iterable) {
         for (const int& obj : iterable) {
             std::cout << obj << std::endl;
         }
@@ -69,7 +69,7 @@ PYBIND11_MODULE(_test_collections, m)
     py::class_<IterTest> PyIterTest(m, "IterTest");
     PyIterTest.def(py::init<int>());
     PyIterTest.def_readwrite("value", &IterTest::value);
-    m.def("test_iter_cls", [](pyext::Iterable<IterTest> iterable) {
+    m.def("test_iter_cls", [](pyext::collections::Iterable<IterTest> iterable) {
         for (const IterTest& obj : iterable) {
             std::cout << obj.value << std::endl;
         }
