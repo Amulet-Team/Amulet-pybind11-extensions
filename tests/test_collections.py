@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import unittest
 from typing import Callable
 from collections.abc import Iterable, Iterator
@@ -84,6 +86,24 @@ class CollectionsTestCase(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             test_iterator_obj(None)
+
+        class MyIterator:
+            def __init__(self) -> None:
+                self.set = False
+
+            def __iter__(self) -> MyIterator:
+                return self
+
+            def __next__(self) -> int:
+                if self.set:
+                    raise StopIteration
+                else:
+                    self.set = True
+                    return 1
+
+        out = []
+        test_iterator_obj(MyIterator(), out)
+        self.assertEqual([1], out)
 
     def test_iterable(self) -> None:
         self.assertEqual(
