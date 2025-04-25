@@ -1,35 +1,52 @@
 import unittest
+from typing import Any, Callable
+from collections.abc import Iterable
 
-from _test_collections import test_iter_obj, test_iter_int, IterTest, test_iter_cls
+from _test_collections import (
+    test_iterable_obj,
+    test_iterable_int,
+    IterTest,
+    test_iterable_cls,
+)
 
 
 class CollectionsTestCase(unittest.TestCase):
-    def test_signature(self) -> None:
+    def test_iterable(self) -> None:
         self.assertEqual(
-            "test_iter_obj(arg0: collections.abc.Iterable) -> collections.abc.Iterable\n",
-            test_iter_obj.__doc__,
+            "test_iterable_obj(arg0: collections.abc.Iterable[object], arg1: list) -> collections.abc.Iterable[object]",
+            test_iterable_obj.__doc__.strip(),
         )
         self.assertEqual(
-            "test_iter_int(arg0: collections.abc.Iterable[int]) -> collections.abc.Iterable[int]\n",
-            test_iter_int.__doc__,
+            "test_iterable_int(arg0: collections.abc.Iterable[int], arg1: list) -> collections.abc.Iterable[int]",
+            test_iterable_int.__doc__.strip(),
         )
         self.assertEqual(
-            "test_iter_cls(arg0: collections.abc.Iterable[_test_collections.IterTest]) -> collections.abc.Iterable[_test_collections.IterTest]\n",
-            test_iter_cls.__doc__,
+            "test_iterable_cls(arg0: collections.abc.Iterable[_test_collections.IterTest], arg1: list) -> collections.abc.Iterable[_test_collections.IterTest]",
+            test_iterable_cls.__doc__.strip(),
         )
 
-    def test_collections(self) -> None:
-        test_iter_obj([None, 1, "2", 3.0])
-        test_iter_obj((None, 1, "2", 3.0))
-        test_iter_obj(dict.fromkeys((None, 1, "2", 3.0), None))
+        def call_iterable(obj: Iterable, func: Callable[[Iterable, list], Iterable]) -> None:
+            objs = []
+            out = func(obj, objs)
+            self.assertIs(obj, out)
+            self.assertEqual(list(obj), objs)
 
-        test_iter_int([1, 2, 3])
-        test_iter_int((1, 2, 3))
-        test_iter_int(dict.fromkeys([1, 2, 3], None))
+        call_iterable([None, 1, "2", 3.0], test_iterable_obj)
 
-        test_iter_cls([IterTest(1), IterTest(2), IterTest(3)])
-        test_iter_cls((IterTest(1), IterTest(2), IterTest(3)))
-        test_iter_cls(dict.fromkeys([IterTest(1), IterTest(2), IterTest(3)], None))
+        call_iterable([None, 1, "2", 3.0], test_iterable_obj)
+        call_iterable((None, 1, "2", 3.0), test_iterable_obj)
+        call_iterable(dict.fromkeys((None, 1, "2", 3.0), None), test_iterable_obj)
+
+        call_iterable([1, 2, 3], test_iterable_int)
+        call_iterable((1, 2, 3), test_iterable_int)
+        call_iterable(dict.fromkeys([1, 2, 3], None), test_iterable_int)
+
+        call_iterable([IterTest(1), IterTest(2), IterTest(3)], test_iterable_cls)
+        call_iterable((IterTest(1), IterTest(2), IterTest(3)), test_iterable_cls)
+        call_iterable(
+            dict.fromkeys([IterTest(1), IterTest(2), IterTest(3)], None),
+            test_iterable_cls,
+        )
 
 
 if __name__ == "__main__":
