@@ -157,6 +157,20 @@ class CollectionsTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             test_iterable_obj(None)
 
+        class MyIterable:
+            def __init__(self) -> None:
+                self.values = [None, 1, "2", 3.0]
+
+            def __getitem__(self, index: int) -> object:
+                return self.values[index]
+
+            def __len__(self) -> int:
+                return len(self.values)
+
+        out = []
+        test_iterable_obj(MyIterable(), out)
+        self.assertEqual([None, 1, "2", 3.0], out)
+
     def test_sequence(self) -> None:
         self.assertEqual(
             "test_sequence_obj(arg0: collections.abc.Sequence[object]) -> collections.abc.Sequence[object]",
