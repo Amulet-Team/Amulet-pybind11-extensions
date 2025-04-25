@@ -39,6 +39,31 @@ public:
 
 PYBIND11_MODULE(_test_collections, m)
 {
+    py::class_<IterTest> PyIterTest(m, "IterTest");
+    PyIterTest.def(py::init<int>());
+    PyIterTest.def_readwrite("value", &IterTest::value);
+    PyIterTest.def(py::self == py::self);
+    auto PyId = py::module::import("builtins").attr("id");
+    PyIterTest.def("__hash__", [PyId](py::object self) -> py::int_ { return PyId(self); });
+
+    m.def("test_iterator_obj", [](pyext::collections::Iterator<py::object> iterator, py::list objs) {
+        for (; iterator != iterator.sentinel(); iterator++) {
+            objs.append(*iterator);
+        }
+        return iterator;
+    });
+    m.def("test_iterator_int", [](pyext::collections::Iterator<int> iterator, py::list objs) {
+        for (; iterator != iterator.sentinel(); iterator++) {
+            objs.append(*iterator);
+        }
+        return iterator;
+    });
+    m.def("test_iterator_cls", [](pyext::collections::Iterator<IterTest> iterator, py::list objs) {
+        for (; iterator != iterator.sentinel(); iterator++) {
+            objs.append(*iterator);
+        }
+        return iterator;
+    });
     m.def("test_iterable_obj", [](pyext::collections::Iterable<py::object> iterable, py::list objs) {
         for (const py::object& obj : iterable) {
             objs.append(obj);
@@ -81,13 +106,6 @@ PYBIND11_MODULE(_test_collections, m)
         ENSURE(it == iterable.end())
         return iterable;
     });
-
-    py::class_<IterTest> PyIterTest(m, "IterTest");
-    PyIterTest.def(py::init<int>());
-    PyIterTest.def_readwrite("value", &IterTest::value);
-    PyIterTest.def(py::self == py::self);
-    auto PyId = py::module::import("builtins").attr("id");
-    PyIterTest.def("__hash__", [PyId](py::object self) -> py::int_ { return PyId(self); });
 
     m.def("test_iterable_cls", [](pyext::collections::Iterable<IterTest> iterable, py::list objs) {
         for (const IterTest& obj : iterable) {
