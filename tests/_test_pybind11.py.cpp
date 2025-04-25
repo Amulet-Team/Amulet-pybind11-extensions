@@ -1,7 +1,5 @@
 #include <pybind11/pybind11.h>
 
-#include <iostream>
-
 #include <amulet/pybind11_extensions/pybind11.hpp>
 
 namespace py = pybind11;
