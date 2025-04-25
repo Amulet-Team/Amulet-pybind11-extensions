@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 from typing import Callable
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable, Iterator, Sequence
 
 from _test_collections import (
     TestToken,
@@ -173,17 +173,37 @@ class CollectionsTestCase(unittest.TestCase):
 
     def test_sequence(self) -> None:
         self.assertEqual(
-            "test_sequence_obj(arg0: collections.abc.Sequence[object]) -> collections.abc.Sequence[object]",
+            "test_sequence_obj(arg0: collections.abc.Sequence[object], arg1: list) -> collections.abc.Sequence[object]",
             test_sequence_obj.__doc__.strip(),
         )
         self.assertEqual(
-            "test_sequence_int(arg0: collections.abc.Sequence[int]) -> collections.abc.Sequence[int]",
+            "test_sequence_int(arg0: collections.abc.Sequence[int], arg1: list) -> collections.abc.Sequence[int]",
             test_sequence_int.__doc__.strip(),
         )
         self.assertEqual(
-            "test_sequence_cls(arg0: collections.abc.Sequence[_test_collections.TestToken]) -> collections.abc.Sequence[_test_collections.TestToken]",
+            "test_sequence_cls(arg0: collections.abc.Sequence[_test_collections.TestToken], arg1: list) -> collections.abc.Sequence[_test_collections.TestToken]",
             test_sequence_cls.__doc__.strip(),
         )
+
+        def call_sequence(obj: Sequence, func: Callable[[Sequence, list], Sequence]) -> None:
+            objs = []
+            obj2 = func(obj, objs)
+            self.assertIs(obj, obj2)
+            self.assertEqual(list(obj), objs)
+
+        call_sequence([None, 1, "2", 3.0], test_sequence_obj)
+        call_sequence((None, 1, "2", 3.0), test_sequence_obj)
+
+        call_sequence([1, 2, 3], test_sequence_int)
+        call_sequence((1, 2, 3), test_sequence_int)
+
+        call_sequence([TestToken(1), TestToken(2), TestToken(3)], test_sequence_cls)
+        call_sequence((TestToken(1), TestToken(2), TestToken(3)), test_sequence_cls)
+
+        out = []
+        with self.assertRaises(TypeError):
+            test_sequence_int(None, out)
+        self.assertEqual([], out)
 
     def test_map(self) -> None:
         self.assertEqual(

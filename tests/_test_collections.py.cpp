@@ -128,9 +128,27 @@ PYBIND11_MODULE(_test_collections, m)
         return iterable;
     });
 
-    m.def("test_sequence_obj", [](pyext::collections::Sequence<py::object> obj) { return obj; });
-    m.def("test_sequence_int", [](pyext::collections::Sequence<int> obj) { return obj; });
-    m.def("test_sequence_cls", [](pyext::collections::Sequence<TestToken> obj) { return obj; });
+    m.def("test_sequence_obj", [](pyext::collections::Sequence<py::object> sequence, py::list objs) {
+        ENSURE(sequence.size() == 4)
+        for (const py::object& obj : sequence) {
+            objs.append(obj);
+        }
+        return sequence; 
+    });
+    m.def("test_sequence_int", [](pyext::collections::Sequence<int> sequence, py::list objs) {
+        ENSURE(sequence.size() == 3)
+        for (const int& obj : sequence) {
+            objs.append(obj);
+        }
+        return sequence;
+    });
+    m.def("test_sequence_cls", [](pyext::collections::Sequence<TestToken> sequence, py::list objs) {
+        ENSURE(sequence.size() == 3)
+        for (const TestToken& obj : sequence) {
+            objs.append(obj);
+        }
+        return sequence;
+    });
     
     m.def("test_map_obj", [](pyext::collections::Mapping<int, py::object> obj) { return obj; });
     m.def("test_map_int", [](pyext::collections::Mapping<int, int> obj) { return obj; });
