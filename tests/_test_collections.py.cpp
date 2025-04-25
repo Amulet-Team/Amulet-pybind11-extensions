@@ -11,14 +11,14 @@
 namespace py = pybind11;
 namespace pyext = Amulet::pybind11_extensions;
 
-class IterTest {
+class TestToken {
 public:
     int value;
-    IterTest(int value)
+    TestToken(int value)
         : value(value)
     {
     }
-    bool operator==(const IterTest& other) const
+    bool operator==(const TestToken& other) const
     {
         return value == other.value;
     }
@@ -39,12 +39,12 @@ public:
 
 PYBIND11_MODULE(_test_collections, m)
 {
-    py::class_<IterTest> PyIterTest(m, "IterTest");
-    PyIterTest.def(py::init<int>());
-    PyIterTest.def_readwrite("value", &IterTest::value);
-    PyIterTest.def(py::self == py::self);
+    py::class_<TestToken> PyTestToken(m, "TestToken");
+    PyTestToken.def(py::init<int>());
+    PyTestToken.def_readwrite("value", &TestToken::value);
+    PyTestToken.def(py::self == py::self);
     auto PyId = py::module::import("builtins").attr("id");
-    PyIterTest.def("__hash__", [PyId](py::object self) -> py::int_ { return PyId(self); });
+    PyTestToken.def("__hash__", [PyId](py::object self) -> py::int_ { return PyId(self); });
 
     m.def("test_iterator_obj", [](pyext::collections::Iterator<py::object> iterator, py::list objs) {
         for (; iterator != iterator.sentinel(); iterator++) {
@@ -58,7 +58,7 @@ PYBIND11_MODULE(_test_collections, m)
         }
         return iterator;
     });
-    m.def("test_iterator_cls", [](pyext::collections::Iterator<IterTest> iterator, py::list objs) {
+    m.def("test_iterator_cls", [](pyext::collections::Iterator<TestToken> iterator, py::list objs) {
         for (; iterator != iterator.sentinel(); iterator++) {
             objs.append(*iterator);
         }
@@ -107,8 +107,8 @@ PYBIND11_MODULE(_test_collections, m)
         return iterable;
     });
 
-    m.def("test_iterable_cls", [](pyext::collections::Iterable<IterTest> iterable, py::list objs) {
-        for (const IterTest& obj : iterable) {
+    m.def("test_iterable_cls", [](pyext::collections::Iterable<TestToken> iterable, py::list objs) {
+        for (const TestToken& obj : iterable) {
             objs.append(obj);
         }
         auto it = iterable.begin();
@@ -127,4 +127,28 @@ PYBIND11_MODULE(_test_collections, m)
         ENSURE(it == iterable.end())
         return iterable;
     });
+
+    m.def("test_sequence_obj", [](pyext::collections::Sequence<py::object> obj) { return obj; });
+    m.def("test_sequence_int", [](pyext::collections::Sequence<int> obj) { return obj; });
+    m.def("test_sequence_cls", [](pyext::collections::Sequence<TestToken> obj) { return obj; });
+    
+    m.def("test_map_obj", [](pyext::collections::Mapping<int, py::object> obj) { return obj; });
+    m.def("test_map_int", [](pyext::collections::Mapping<int, int> obj) { return obj; });
+    m.def("test_map_cls", [](pyext::collections::Mapping<int, TestToken> obj) { return obj; });
+
+    m.def("test_mutable_map_obj", [](pyext::collections::MutableMapping<int, py::object> obj) { return obj; });
+    m.def("test_mutable_map_int", [](pyext::collections::MutableMapping<int, int> obj) { return obj; });
+    m.def("test_mutable_map_cls", [](pyext::collections::MutableMapping<int, TestToken> obj) { return obj; });
+
+    m.def("test_keys_view_obj", [](pyext::collections::KeysView<py::object> obj) { return obj; });
+    m.def("test_keys_view_int", [](pyext::collections::KeysView<int> obj) { return obj; });
+    m.def("test_keys_view_cls", [](pyext::collections::KeysView<TestToken> obj) { return obj; });
+
+    m.def("test_values_view_obj", [](pyext::collections::ValuesView<py::object> obj) { return obj; });
+    m.def("test_values_view_int", [](pyext::collections::ValuesView<int> obj) { return obj; });
+    m.def("test_values_view_cls", [](pyext::collections::ValuesView<TestToken> obj) { return obj; });
+
+    m.def("test_items_view_obj", [](pyext::collections::ItemsView<int, py::object> obj) { return obj; });
+    m.def("test_items_view_int", [](pyext::collections::ItemsView<int, int> obj) { return obj; });
+    m.def("test_items_view_cls", [](pyext::collections::ItemsView<int, TestToken> obj) { return obj; });
 }
