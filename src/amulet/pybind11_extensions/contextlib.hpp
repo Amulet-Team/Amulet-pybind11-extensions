@@ -9,51 +9,51 @@
 
 namespace Amulet {
 namespace pybind11_extensions {
-namespace contextlib {
-    template <typename T, typename ExitT = std::optional<bool>>
-    class ContextManager : public pybind11::object {
-        PYBIND11_OBJECT_DEFAULT(ContextManager, object, PyObject_Type)
-        using object::object;
-    };
-
-    namespace detail {
+    namespace contextlib {
         template <typename T, typename ExitT = std::optional<bool>>
-        class ContextManager {
-        public:
-            std::function<T()> enter;
-            std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit;
-            ContextManager(
-                std::function<T()> enter,
-                std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit)
-                : enter(enter)
-                , exit(exit)
-            {
-            }
+        class ContextManager : public pybind11::object {
+            PYBIND11_OBJECT_DEFAULT(ContextManager, object, PyObject_Type)
+            using object::object;
         };
-    }
 
-    template <typename T, typename ExitT = std::optional<bool>>
-    auto make_context_manager(
-        std::function<T()> enter,
-        std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit) -> ContextManager<T, ExitT>
-    {
-        using ContextManagerT = detail::ContextManager<T, ExitT>;
-        if (!pybind11::detail::get_type_info(typeid(ContextManagerT), false)) {
-            pybind11::class_<ContextManagerT>(pybind11::handle(), "ContextManager", pybind11::module_local())
-                .def(
-                    "__enter__",
-                    [](const ContextManagerT& self) -> T {
-                        return self.enter();
-                    })
-                .def(
-                    "__exit__",
-                    [](const ContextManagerT& self, pybind11::object exc_type, pybind11::object exc_val, pybind11::object exc_tb) -> ExitT {
-                        return self.exit(exc_type, exc_val, exc_tb);
-                    });
+        namespace detail {
+            template <typename T, typename ExitT = std::optional<bool>>
+            class ContextManager {
+            public:
+                std::function<T()> enter;
+                std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit;
+                ContextManager(
+                    std::function<T()> enter,
+                    std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit)
+                    : enter(enter)
+                    , exit(exit)
+                {
+                }
+            };
         }
-        return pybind11::cast(ContextManagerT(enter, exit));
-    }
-} // namespace contextlib
+
+        template <typename T, typename ExitT = std::optional<bool>>
+        auto make_context_manager(
+            std::function<T()> enter,
+            std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit) -> ContextManager<T, ExitT>
+        {
+            using ContextManagerT = detail::ContextManager<T, ExitT>;
+            if (!pybind11::detail::get_type_info(typeid(ContextManagerT), false)) {
+                pybind11::class_<ContextManagerT>(pybind11::handle(), "ContextManager", pybind11::module_local())
+                    .def(
+                        "__enter__",
+                        [](const ContextManagerT& self) -> T {
+                            return self.enter();
+                        })
+                    .def(
+                        "__exit__",
+                        [](const ContextManagerT& self, pybind11::object exc_type, pybind11::object exc_val, pybind11::object exc_tb) -> ExitT {
+                            return self.exit(exc_type, exc_val, exc_tb);
+                        });
+            }
+            return pybind11::cast(ContextManagerT(enter, exit));
+        }
+    } // namespace contextlib
 } // namespace pybind11_extensions
 } // namespace Amulet
 
