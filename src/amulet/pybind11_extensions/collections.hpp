@@ -90,17 +90,32 @@ namespace pybind11_extensions {
 
         template <typename T>
         class Sequence : public pybind11::object {
-            PYBIND11_OBJECT_DEFAULT(Sequence, object, PyObject_Type)
+            PYBIND11_OBJECT_DEFAULT(Sequence, object, PySequence_Check)
+
+            Iterator<T> begin() const
+            {
+                return Iterator<T>(pybind11::object::begin());
+            }
+
+            Iterator<T> end() const
+            {
+                return Iterator<T>(pybind11::object::end());
+            }
+
+            Py_ssize_t size() const
+            {
+                return PyObject_Size(ptr());
+            }
         };
 
         template <typename K, typename V>
         class Mapping : public pybind11::object {
-            PYBIND11_OBJECT_DEFAULT(Mapping, object, PyObject_Type)
+            PYBIND11_OBJECT_DEFAULT(Mapping, object, PyMapping_Check)
         };
 
         template <typename K, typename V>
         class MutableMapping : public pybind11::object {
-            PYBIND11_OBJECT_DEFAULT(MutableMapping, object, PyObject_Type)
+            PYBIND11_OBJECT_DEFAULT(MutableMapping, object, PyMapping_Check)
         };
 
         template <typename K>
