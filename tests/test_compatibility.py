@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+
 class CompatibilityTestCase(TestCase):
     def test_compatibility(self) -> None:
         import _test_compatibility_2

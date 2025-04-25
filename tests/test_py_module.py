@@ -6,6 +6,7 @@ import os
 class PyModuleTestCase(TestCase):
     def test_py_module(self) -> None:
         import _test_py_module.sub
+
         self.assertIsInstance(_test_py_module.sub, ModuleType)
         self.assertIsInstance(_test_py_module.sub.__path__, list)
         self.assertEqual(

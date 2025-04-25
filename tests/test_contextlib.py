@@ -3,13 +3,17 @@ from unittest import TestCase
 import _test_contextlib
 from _test_contextlib import func, suppress
 
+
 class MyException(Exception):
     pass
 
 
 class ContextLibTestCase(TestCase):
     def test_contextlib(self) -> None:
-        self.assertEqual("func() -> contextlib.AbstractContextManager[str, Optional[bool]]", func.__doc__.strip())
+        self.assertEqual(
+            "func() -> contextlib.AbstractContextManager[str, Optional[bool]]",
+            func.__doc__.strip(),
+        )
         self.assertEqual(0, _test_contextlib.state)
         with func() as value:
             self.assertIsInstance(value, str)
