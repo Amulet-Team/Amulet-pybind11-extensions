@@ -46,8 +46,14 @@ class MappingTestCase(unittest.TestCase):
         self.assertIsNone(mapping.get(6))
         self.assertEqual("hello world", mapping.get(6, "hello world"))
 
-        self.assertEqual(TestMapping({1: 2, 3: 4, 5: 6}), TestMapping({1: 2, 3: 4, 5: 6}))
-        self.assertNotEqual(TestMapping({1: 2, 3: 4, 5: 6}), TestMapping({1: 2, 3: 4, 5: 7}))
+        self.assertEqual(
+            TestMapping({1: 2, 3: 4, 5: 6}), TestMapping({1: 2, 3: 4, 5: 6})
+        )
+        self.assertNotEqual(
+            TestMapping({1: 2, 3: 4, 5: 6}), TestMapping({1: 2, 3: 4, 5: 7})
+        )
+        self.assertNotEqual(TestMapping({1: 2, 3: 4, 5: 6}), TestMapping({}))
+        self.assertNotEqual(TestMapping({}), TestMapping({1: 2, 3: 4, 5: 7}))
 
         with self.assertRaises(TypeError):
             hash(mapping)
