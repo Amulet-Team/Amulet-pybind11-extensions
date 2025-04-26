@@ -1,5 +1,6 @@
 import unittest
 from collections.abc import Sequence
+from weakref import ref
 
 
 class SequenceTestCase(unittest.TestCase):
@@ -58,6 +59,24 @@ class SequenceTestCase(unittest.TestCase):
         self.assertEqual(0, sequence.count(5))
 
         self.assertIsInstance(sequence, Sequence)
+
+    def test_iter_lifespan(self) -> None:
+        from _test_sequence import TestSequence
+
+        sequence = TestSequence()
+        it = iter(sequence)
+        sequence_ref = ref(sequence)
+        del sequence
+        self.assertIsNotNone(sequence_ref())
+
+    def test_reverse_lifespan(self) -> None:
+        from _test_sequence import TestSequence
+
+        sequence = TestSequence()
+        it = reversed(sequence)
+        sequence_ref = ref(sequence)
+        del sequence
+        self.assertIsNotNone(sequence_ref())
 
 
 if __name__ == "__main__":

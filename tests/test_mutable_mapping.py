@@ -1,5 +1,6 @@
 import unittest
 from collections.abc import Mapping, MutableMapping
+from weakref import ref
 
 
 class MutableMappingTestCase(unittest.TestCase):
@@ -105,6 +106,15 @@ class MutableMappingTestCase(unittest.TestCase):
             TestMutableMapping({"10": 21, "30": 41, "a": 16, "b": 36, "11": 11}),
             mapping,
         )
+
+    def test_iter_lifespan(self) -> None:
+        from _test_mutable_mapping import TestMutableMapping
+
+        mapping = TestMutableMapping({"1": 2, "3": 4, "5": 6})
+        it = iter(mapping)
+        mapping_ref = ref(mapping)
+        del mapping
+        self.assertIsNotNone(mapping_ref())
 
 
 if __name__ == "__main__":

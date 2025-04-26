@@ -1,5 +1,6 @@
 import unittest
 from collections.abc import Mapping
+from weakref import ref
 
 
 class MappingTestCase(unittest.TestCase):
@@ -59,6 +60,15 @@ class MappingTestCase(unittest.TestCase):
             hash(mapping)
 
         self.assertIsInstance(mapping, Mapping)
+
+    def test_iter_lifespan(self) -> None:
+        from _test_mapping import TestMapping
+
+        mapping = TestMapping({1: 2, 3: 4, 5: 6})
+        it = iter(mapping)
+        mapping_ref = ref(mapping)
+        del mapping
+        self.assertIsNotNone(mapping_ref())
 
 
 if __name__ == "__main__":
