@@ -12,8 +12,8 @@ class TestMapping {
 public:
     std::map<int, int> map;
 
-    TestMapping(const std::map<int, int>& map)
-        : map(map)
+    TestMapping(std::map<int, int> map)
+        : map(std::move(map))
     {
     }
 };
