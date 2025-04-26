@@ -31,6 +31,8 @@ class SequenceTestCase(unittest.TestCase):
         self.assertEqual(2, next(it))
         self.assertEqual(3, next(it))
         self.assertEqual(4, next(it))
+        with self.assertRaises(StopIteration):
+            next(it)
 
         it = reversed(sequence)
         self.assertEqual(4, next(it))
@@ -38,6 +40,8 @@ class SequenceTestCase(unittest.TestCase):
         self.assertEqual(2, next(it))
         self.assertEqual(1, next(it))
         self.assertEqual(0, next(it))
+        with self.assertRaises(StopIteration):
+            next(it)
 
         self.assertEqual(0, sequence.index(0))
         self.assertEqual(1, sequence.index(1))
