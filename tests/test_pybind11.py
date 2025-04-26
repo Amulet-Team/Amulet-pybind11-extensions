@@ -1,8 +1,8 @@
-from unittest import TestCase
+import unittest
 
 
-class PyModuleTestCase(TestCase):
-    def test_iterator(self) -> None:
+class Pybind11TestCase(unittest.TestCase):
+    def test_pybind11(self) -> None:
         from _test_pybind11 import get_iterator
 
         it = get_iterator()
@@ -12,3 +12,7 @@ class PyModuleTestCase(TestCase):
             "get_iterator() -> collections.abc.Iterator[int]",
             get_iterator.__doc__.strip(),
         )
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,9 +1,9 @@
-from unittest import TestCase
+import unittest
 from types import NotImplementedType
 
 
-class PyModuleTestCase(TestCase):
-    def test_iterator(self) -> None:
+class TypesTestCase(unittest.TestCase):
+    def test_types(self) -> None:
         from _test_types import func
 
         self.assertEqual(
@@ -11,3 +11,7 @@ class PyModuleTestCase(TestCase):
             func.__doc__.strip(),
         )
         self.assertIs(NotImplementedType, func())
+
+
+if __name__ == "__main__":
+    unittest.main()

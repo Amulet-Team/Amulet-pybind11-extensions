@@ -34,7 +34,7 @@ from _test_collections import (
 
 
 class CollectionsTestCase(unittest.TestCase):
-    def test_iterator(self) -> None:
+    def test_collections(self) -> None:
         self.assertEqual(
             "test_iterator_obj(arg0: collections.abc.Iterator[object], arg1: list) -> collections.abc.Iterator[object]",
             test_iterator_obj.__doc__.strip(),
@@ -48,7 +48,9 @@ class CollectionsTestCase(unittest.TestCase):
             test_iterator_cls.__doc__.strip(),
         )
 
-        def call_iterator(obj: Iterable, func: Callable[[Iterator, list], Iterator]) -> None:
+        def call_iterator(
+            obj: Iterable, func: Callable[[Iterator, list], Iterator]
+        ) -> None:
             objs = []
             it = iter(obj)
             it2 = func(it, objs)
@@ -119,7 +121,9 @@ class CollectionsTestCase(unittest.TestCase):
             test_iterable_cls.__doc__.strip(),
         )
 
-        def call_iterable(obj: Iterable, func: Callable[[Iterable, list], Iterable]) -> None:
+        def call_iterable(
+            obj: Iterable, func: Callable[[Iterable, list], Iterable]
+        ) -> None:
             objs = []
             obj2 = func(obj, objs)
             self.assertIs(obj, obj2)
@@ -185,7 +189,9 @@ class CollectionsTestCase(unittest.TestCase):
             test_sequence_cls.__doc__.strip(),
         )
 
-        def call_sequence(obj: Sequence, func: Callable[[Sequence, list], Sequence]) -> None:
+        def call_sequence(
+            obj: Sequence, func: Callable[[Sequence, list], Sequence]
+        ) -> None:
             objs = []
             obj2 = func(obj, objs)
             self.assertIs(obj, obj2)

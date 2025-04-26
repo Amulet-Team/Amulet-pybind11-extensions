@@ -1,7 +1,7 @@
-from unittest import TestCase
+import unittest
 
 
-class CompatibilityTestCase(TestCase):
+class CompatibilityTestCase(unittest.TestCase):
     def test_compatibility(self) -> None:
         import _test_compatibility_2
         import _test_compatibility_1
@@ -17,3 +17,7 @@ class CompatibilityTestCase(TestCase):
         self.assertIsInstance(compiler_config_2["pybind11_version"], str)
         self.assertIsInstance(compiler_config_2["compiler_id"], str)
         self.assertIsInstance(compiler_config_2["compiler_version"], str)
+
+
+if __name__ == "__main__":
+    unittest.main()

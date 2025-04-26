@@ -14,7 +14,7 @@ from _test_numpy import (
 )
 
 
-class CollectionsTestCase(unittest.TestCase):
+class NumpyTestCase(unittest.TestCase):
     def test_numpy(self) -> None:
         self.assertEqual(
             "func_uint8(arg0: numpy.typing.NDArray[numpy.uint8]) -> None",

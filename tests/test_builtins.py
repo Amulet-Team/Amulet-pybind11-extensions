@@ -3,7 +3,7 @@ import unittest
 from _test_builtins import MyPyClass, func1, func2, func3
 
 
-class CollectionsTestCase(unittest.TestCase):
+class BuiltinsTestCase(unittest.TestCase):
     def test_signature(self) -> None:
         a = MyPyClass(5)
         self.assertIsNot(a, func1(a))

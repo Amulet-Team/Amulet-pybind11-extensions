@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest
 
 import _test_contextlib
 from _test_contextlib import func, suppress
@@ -8,7 +8,7 @@ class MyException(Exception):
     pass
 
 
-class ContextLibTestCase(TestCase):
+class ContextLibTestCase(unittest.TestCase):
     def test_contextlib(self) -> None:
         self.assertEqual(
             "func() -> contextlib.AbstractContextManager[str, Optional[bool]]",
@@ -31,3 +31,7 @@ class ContextLibTestCase(TestCase):
         with suppress() as value:
             self.assertIsNone(value)
             raise MyException
+
+
+if __name__ == "__main__":
+    unittest.main()
