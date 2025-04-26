@@ -18,5 +18,5 @@ PYBIND11_MODULE(_test_hash, m)
 
     py::class_<detail::TestUnhashable> TestUnhashable(m, "TestUnhashable");
     TestUnhashable.def(py::init());
-    Amulet::pybind11_extensions::def_hash_disable(TestUnhashable);
+    Amulet::pybind11_extensions::def_unhashable(TestUnhashable);
 }

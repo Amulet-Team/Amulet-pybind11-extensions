@@ -17,7 +17,7 @@ namespace pybind11_extensions {
     }
 
     template <typename clsT>
-    void def_hash_disable(clsT cls)
+    void def_unhashable(clsT cls)
     {
         auto cls_name = cls.attr("__name__").cast<std::string>();
         cls.def(
