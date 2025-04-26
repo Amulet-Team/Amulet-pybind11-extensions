@@ -6,9 +6,9 @@
 
 #include <variant>
 
-#include <amulet/pybind11_extensions/hash.hpp>
 #include <amulet/pybind11_extensions/builtins.hpp>
 #include <amulet/pybind11_extensions/collections.hpp>
+#include <amulet/pybind11_extensions/hash.hpp>
 #include <amulet/pybind11_extensions/types.hpp>
 
 namespace Amulet {
@@ -141,5 +141,6 @@ namespace pybind11_extensions {
         }
 
     } // namespace collections
+
 } // namespace pybind11_extensions
 } // namespace Amulet
