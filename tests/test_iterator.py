@@ -1,9 +1,9 @@
 import unittest
 
 
-class Pybind11TestCase(unittest.TestCase):
-    def test_pybind11(self) -> None:
-        from _test_pybind11 import get_iterator
+class IteratorTestCase(unittest.TestCase):
+    def test_iterator(self) -> None:
+        from _test_iterator import get_iterator
 
         it = get_iterator()
         self.assertIs(it, iter(it))

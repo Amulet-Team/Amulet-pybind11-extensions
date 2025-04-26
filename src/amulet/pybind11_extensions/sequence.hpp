@@ -7,7 +7,7 @@
 #include <memory>
 
 #include <amulet/pybind11_extensions/collections.hpp>
-#include <amulet/pybind11_extensions/pybind11.hpp>
+#include <amulet/pybind11_extensions/iterator.hpp>
 
 namespace detail {
 // An iterator for the collections.abc.Sequence protocol.
