@@ -5,6 +5,7 @@
 // Type hints for builtin types.
 
 
+namespace Amulet {
 namespace pybind11_extensions {
     // Type hint for a native python object.
     namespace detail {
@@ -34,39 +35,20 @@ namespace pybind11_extensions {
         PYBIND11_OBJECT_DEFAULT(PyObjectCpp, object, PyObject_Type)
             using object::object;
     };
-
-    template <typename T>
-    class Args : public pybind11::args {
-        using args::args;
-    };
-
-    template <typename T>
-    class KWArgs : public pybind11::kwargs {
-        using kwargs::kwargs;
-    };
-}
+} // namespace pybind11_extensions
+} // namespace Amulet
 
 
 namespace pybind11 {
 	namespace detail {
-		template <pybind11_extensions::detail::FixedString T>
-		struct handle_type_name<pybind11_extensions::PyObjectStr<T>> {
+		template <Amulet::pybind11_extensions::detail::FixedString T>
+		struct handle_type_name<Amulet::pybind11_extensions::PyObjectStr<T>> {
 			static constexpr auto name = pybind11::detail::const_name(T.buf);
 		};
 
 		template <typename cppT>
-		struct handle_type_name<pybind11_extensions::PyObjectCpp<cppT>> {
+		struct handle_type_name<Amulet::pybind11_extensions::PyObjectCpp<cppT>> {
 			static constexpr auto name = make_caster<cppT>::name;
 		};
-
-        template <typename T>
-        struct handle_type_name<pybind11_extensions::Args<T>> {
-            static constexpr auto name = const_name("*args: ") + make_caster<T>::name;
-        };
-
-        template <typename T>
-        struct handle_type_name<pybind11_extensions::KWArgs<T>> {
-            static constexpr auto name = const_name("**kwargs: ") + make_caster<T>::name;
-        };
 	}
 }
