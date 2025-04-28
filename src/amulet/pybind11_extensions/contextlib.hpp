@@ -7,6 +7,8 @@
 #include <optional>
 #include <type_traits>
 
+#include <amulet/pybind11_extensions/pybind11.hpp>
+
 namespace Amulet {
 namespace pybind11_extensions {
     namespace contextlib {
@@ -38,7 +40,7 @@ namespace pybind11_extensions {
             std::function<ExitT(pybind11::object, pybind11::object, pybind11::object)> exit) -> ContextManager<T, ExitT>
         {
             using ContextManagerT = detail::ContextManager<T, ExitT>;
-            if (!pybind11::detail::get_type_info(typeid(ContextManagerT), false)) {
+            if (!pybind11_extensions::is_class_bound<ContextManagerT>()) {
                 pybind11::class_<ContextManagerT>(pybind11::handle(), "ContextManager", pybind11::module_local())
                     .def(
                         "__enter__",

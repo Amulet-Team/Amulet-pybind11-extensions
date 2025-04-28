@@ -1,6 +1,7 @@
 #pragma once
 #include <pybind11/pybind11.h>
 
+#include <amulet/pybind11_extensions/pybind11.hpp>
 #include <amulet/pybind11_extensions/builtins.hpp>
 #include <amulet/pybind11_extensions/collections.hpp>
 
@@ -15,7 +16,7 @@ namespace pybind11_extensions {
         typename... Extra>
     auto make_iterator(Iterator it, Extra&&... extra) -> pybind11_extensions::collections::Iterator<decltype(it.next())>
     {
-        if (!pybind11::detail::get_type_info(typeid(Iterator), false)) {
+        if (!is_class_bound<Iterator>()) {
             pybind11::class_<Iterator>(pybind11::handle(), "iterator", pybind11::module_local())
                 .def(
                     "__iter__",
