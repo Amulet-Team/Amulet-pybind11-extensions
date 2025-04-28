@@ -1,6 +1,8 @@
 #include <pybind11/pybind11.h>
 
 #include <map>
+#include <memory>
+#include <string>
 
 #include <amulet/pybind11_extensions/mapping.hpp>
 
@@ -18,6 +20,8 @@ public:
     }
 };
 }
+
+static std::map<int, int> GlobalIntMap { { 10, 20 }, { 30, 40 }, { 50, 60 } };
 
 PYBIND11_MODULE(_test_mapping, m)
 {
@@ -53,4 +57,24 @@ PYBIND11_MODULE(_test_mapping, m)
     pyext::collections::def_Mapping_eq(TestMapping);
     pyext::collections::def_Mapping_hash(TestMapping);
     pyext::collections::register_Mapping(TestMapping);
+
+    m.def("get_global_int_map", []() {
+        return pyext::make_mapping(GlobalIntMap);
+    });
+
+    m.def("make_int_int_map", []() {
+        auto map = std::make_unique<std::map<int, int>>();
+        map->emplace(1, 2);
+        map->emplace(3, 4);
+        map->emplace(5, 6);
+        return pyext::make_mapping(*map, std::move(map));
+    });
+
+    m.def("make_str_int_map", []() {
+        auto map = std::make_unique<std::map<std::string, int>>();
+        map->emplace("1", 2);
+        map->emplace("3", 4);
+        map->emplace("5", 6);
+        return pyext::make_mapping(*map, std::move(map));
+    });
 }
