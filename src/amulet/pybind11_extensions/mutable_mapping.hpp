@@ -2,7 +2,7 @@
 
 #include <pybind11/pybind11.h>
 
-#include "mapping.hpp"
+#include <amulet/pybind11_extensions/mapping.hpp>
 
 namespace py = pybind11;
 

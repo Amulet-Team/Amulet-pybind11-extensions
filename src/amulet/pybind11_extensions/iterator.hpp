@@ -1,8 +1,8 @@
 #pragma once
 #include <pybind11/pybind11.h>
 
-#include "builtins.hpp"
-#include "collections.hpp"
+#include <amulet/pybind11_extensions/builtins.hpp>
+#include <amulet/pybind11_extensions/collections.hpp>
 
 namespace Amulet {
 namespace pybind11_extensions {

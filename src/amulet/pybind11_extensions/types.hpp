@@ -1,6 +1,7 @@
 #pragma once
-#include "builtins.hpp"
 #include <pybind11/pybind11.h>
+
+#include <amulet/pybind11_extensions/builtins.hpp>
 
 // This extension adds a py::object subclass for types.NotImplementedType.
 // This is used as a return in comparison operators.
