@@ -116,6 +116,108 @@ class MutableMappingTestCase(unittest.TestCase):
         del mapping
         self.assertIsNotNone(mapping_ref())
 
+    def test_make_mapping(self):
+        from _test_mutable_mapping import get_global_int_map, make_int_int_map, make_str_int_map
+
+        m = get_global_int_map()
+        self.assertEqual(20, m[10])
+        self.assertEqual(40, m[30])
+        self.assertEqual(60, m[50])
+        it = iter(m)
+        self.assertEqual(10, next(it))
+        self.assertEqual(30, next(it))
+        self.assertEqual(50, next(it))
+        with self.assertRaises(StopIteration):
+            next(it)
+        self.assertEqual(3, len(m))
+        self.assertIn(10, m)
+        self.assertNotIn(20, m)
+        self.assertIn(30, m)
+        self.assertNotIn(40, m)
+        self.assertIn(50, m)
+        self.assertNotIn(60, m)
+
+        it = iter(m)
+        self.assertEqual(10, next(it))
+        m[60] = 70
+        with self.assertRaises(RuntimeError):
+            next(it)
+        self.assertEqual(70, get_global_int_map()[60])
+
+        m = make_int_int_map()
+        self.assertEqual(2, m[1])
+        self.assertEqual(4, m[3])
+        self.assertEqual(6, m[5])
+        it = iter(m)
+        self.assertEqual(1, next(it))
+        self.assertEqual(3, next(it))
+        self.assertEqual(5, next(it))
+        with self.assertRaises(StopIteration):
+            next(it)
+        self.assertEqual(3, len(m))
+        self.assertIn(1, m)
+        self.assertNotIn(2, m)
+        self.assertIn(3, m)
+        self.assertNotIn(4, m)
+        self.assertIn(5, m)
+        self.assertNotIn(6, m)
+
+        it = iter(m)
+        self.assertEqual(1, next(it))
+        m[6] = 7
+        with self.assertRaises(RuntimeError):
+            next(it)
+        self.assertEqual(7, m[6])
+
+        m = make_str_int_map()
+        self.assertEqual(2, m["1"])
+        self.assertEqual(4, m["3"])
+        self.assertEqual(6, m["5"])
+        it = iter(m)
+        self.assertEqual("1", next(it))
+        self.assertEqual("3", next(it))
+        self.assertEqual("5", next(it))
+        with self.assertRaises(StopIteration):
+            next(it)
+        self.assertEqual(3, len(m))
+        self.assertIn("1", m)
+        self.assertNotIn("2", m)
+        self.assertIn("3", m)
+        self.assertNotIn("4", m)
+        self.assertIn("5", m)
+        self.assertNotIn("6", m)
+
+        it = iter(m)
+        self.assertEqual("1", next(it))
+        m["6"] = 7
+        with self.assertRaises(RuntimeError):
+            next(it)
+        self.assertEqual(7, m["6"])
+
+    def test_make_mapping_lifespan(self) -> None:
+        from _test_mutable_mapping import get_global_int_map, make_int_int_map, make_str_int_map
+
+        m = get_global_int_map()
+        m_ref = ref(m)
+        it = iter(m)
+        del m
+        self.assertIsNotNone(m_ref())
+        self.assertEqual(10, next(it))
+
+        m = make_int_int_map()
+        m_ref = ref(m)
+        it = iter(m)
+        del m
+        self.assertIsNotNone(m_ref())
+        self.assertEqual(1, next(it))
+
+        m = make_str_int_map()
+        m_ref = ref(m)
+        it = iter(m)
+        del m
+        self.assertIsNotNone(m_ref())
+        self.assertEqual("1", next(it))
+
 
 if __name__ == "__main__":
     unittest.main()

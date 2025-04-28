@@ -2,6 +2,7 @@
 
 #include <pybind11/pybind11.h>
 
+#include <amulet/pybind11_extensions/collections.hpp>
 #include <amulet/pybind11_extensions/mapping.hpp>
 
 namespace py = pybind11;
@@ -148,5 +149,96 @@ namespace pybind11_extensions {
         }
 
     } // namespace collections
+
+    namespace detail {
+        template <typename Map>
+        class MutableMapWrapper {
+        public:
+            using MapType = Map;
+
+            Map& map;
+
+            MutableMapWrapper(Map& map)
+                : map(map)
+            {
+            }
+        };
+
+        template <typename Map, typename Owner>
+        class OwningMutableMapWrapper : public MutableMapWrapper<Map> {
+        private:
+            Owner owner;
+
+        public:
+            OwningMutableMapWrapper(Map& map, Owner&& owner)
+                : MutableMapWrapper<Map>(map)
+                , owner(std::forward<Owner>(owner))
+            {
+            }
+        };
+
+        template <typename MappingWrapper, typename Cls>
+        void bind_mutable_mapping_to(Cls& MutableMapping)
+        {
+            bind_mapping_to<MappingWrapper>(MutableMapping);
+            MutableMapping.def(
+                "__setitem__",
+                [](
+                    MappingWrapper& self,
+                    MappingWrapper::MapType::key_type& key,
+                    MappingWrapper::MapType::mapped_type& value) {
+                    self.map.insert_or_assign(key, value);
+                });
+            MutableMapping.def(
+                "__delitem__",
+                [](
+                    MappingWrapper& self,
+                    MappingWrapper::MapType::key_type& key) {
+                    self.map.erase(key);
+                });
+            MutableMapping.def(
+                "clear",
+                [](MappingWrapper& self) {
+                    self.map.clear();
+                });
+            collections::def_MutableMapping_pop(MutableMapping);
+            collections::def_MutableMapping_popitem(MutableMapping);
+            collections::def_MutableMapping_update(MutableMapping);
+            collections::def_MutableMapping_setdefault(MutableMapping);
+            collections::register_MutableMapping(MutableMapping);
+        }
+
+        template <typename MappingWrapper>
+        void bind_mutable_mapping()
+        {
+            pybind11::class_<MappingWrapper> Mapping(pybind11::handle(), "MutableMapping", pybind11::module_local());
+            bind_mutable_mapping_to<MappingWrapper>(Mapping);
+        }
+    }
+
+    // Make a python class that models collections.abc.MutableMapping around a C++ map-like object.
+    // The caller must tie the lifespan of the map to the lifespan of the returned object.
+    template <typename Map>
+    collections::MutableMapping<typename Map::key_type, typename Map::mapped_type> make_mutable_mapping(Map& map)
+    {
+        using MappingWrapper = detail::MutableMapWrapper<Map>;
+        if (!is_class_bound<MappingWrapper>()) {
+            detail::bind_mutable_mapping<MappingWrapper>();
+        }
+        return pybind11::cast(MappingWrapper(map));
+    }
+
+    // Make a python class that models collections.abc.MutableMapping around a C++ map-like object.
+    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, py::object or any object keeping the map alive.
+    template <typename Map, typename Owner>
+    collections::MutableMapping<typename Map::key_type, typename Map::mapped_type> make_mutable_mapping(Map& map, Owner&& owner)
+    {
+        using MappingWrapper = detail::OwningMutableMapWrapper<Map, Owner>;
+        if (!is_class_bound<MappingWrapper>()) {
+            detail::bind_mutable_mapping<MappingWrapper>();
+        }
+        return pybind11::cast(MappingWrapper(map, std::forward<Owner>(owner)));
+    }
+
 } // namespace pybind11_extensions
 } // namespace Amulet
