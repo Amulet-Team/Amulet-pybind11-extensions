@@ -13,7 +13,7 @@ static std::string get_version_top(std::string version)
 namespace Amulet {
 namespace pybind11_extensions {
 
-    void init_compiler_config(pybind11::module m)
+    inline void init_compiler_config(pybind11::module m)
     {
         pybind11::dict compiler_config;
         compiler_config["pybind11_version"] = PYBIND11_VERSION;
@@ -22,7 +22,7 @@ namespace pybind11_extensions {
         m.attr("compiler_config") = compiler_config;
     }
 
-    void check_compatibility(pybind11::module a, pybind11::module b)
+    inline void check_compatibility(pybind11::module a, pybind11::module b)
     {
         std::string a_name = a.attr("__name__").cast<std::string>();
         std::string b_name = b.attr("__name__").cast<std::string>();

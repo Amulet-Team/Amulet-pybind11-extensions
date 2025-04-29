@@ -4,12 +4,12 @@
 
 namespace Amulet {
 namespace pybind11_extensions {
-    void keep_alive(pybind11::handle nurse, pybind11::handle patient){
+    inline void keep_alive(pybind11::handle nurse, pybind11::handle patient){
         pybind11::detail::keep_alive_impl(nurse, patient);
     }
 
     template <typename T>
-    bool is_class_bound(){
+    inline bool is_class_bound(){
         return pybind11::detail::get_type_info(typeid(T));
     }
 } // namespace pybind11_extensions
