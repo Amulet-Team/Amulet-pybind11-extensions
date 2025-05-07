@@ -117,7 +117,11 @@ class MutableMappingTestCase(unittest.TestCase):
         self.assertIsNotNone(mapping_ref())
 
     def test_make_mapping(self):
-        from _test_mutable_mapping import get_global_int_map, make_int_int_map, make_str_int_map
+        from _test_mutable_mapping import (
+            get_global_int_map,
+            make_int_int_map,
+            make_str_int_map,
+        )
 
         m = get_global_int_map()
         self.assertEqual(20, m[10])
@@ -195,7 +199,11 @@ class MutableMappingTestCase(unittest.TestCase):
         self.assertEqual(7, m["6"])
 
     def test_make_mapping_lifespan(self) -> None:
-        from _test_mutable_mapping import get_global_int_map, make_int_int_map, make_str_int_map
+        from _test_mutable_mapping import (
+            get_global_int_map,
+            make_int_int_map,
+            make_str_int_map,
+        )
 
         m = get_global_int_map()
         m_ref = ref(m)
