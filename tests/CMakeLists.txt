@@ -29,7 +29,7 @@ function(add_text_ext name)
     target_compile_definitions(${name} PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
     target_compile_definitions(${name} PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
     target_sources(${name} PRIVATE ${name}.py.cpp)
-    install(TARGETS ${name} DESTINATION ".")
+    install(TARGETS ${name} DESTINATION ${TEST_AMULET_PYBIND11_EXTENSIONS_DIR})
 endfunction()
 
 # Add python extensions
