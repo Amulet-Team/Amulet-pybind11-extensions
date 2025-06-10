@@ -203,9 +203,20 @@ namespace pybind11_extensions {
                 return pybind11::cast((it++)->first);
             }
         };
+    } // namespace detail
 
+    // Make a collections.abc.Iterator around a C++ map-like object.
+    // The caller must tie the lifespan of the map to the lifespan of the returned object.
+    template <typename Map>
+    collections::Iterator<typename Map::key_type> make_map_iterator(const Map& map)
+    {
+        return make_iterator(detail::MapIterator(map));
+    }
+
+    namespace detail {
         template <typename MappingWrapper, typename Cls>
-        void bind_mapping_to(Cls& Mapping) {
+        void bind_mapping_to(Cls& Mapping)
+        {
             Mapping.def(
                 "__getitem__",
                 [](MappingWrapper& self, pybind11::object key) {
@@ -218,7 +229,7 @@ namespace pybind11_extensions {
             Mapping.def(
                 "__iter__",
                 [](MappingWrapper& self) {
-                    return make_iterator(MapIterator(self.map));
+                    return make_map_iterator(self.map);
                 },
                 pybind11::keep_alive<0, 1>());
             Mapping.def(
@@ -242,11 +253,12 @@ namespace pybind11_extensions {
         }
 
         template <typename MappingWrapper>
-        void bind_mapping() {
+        void bind_mapping()
+        {
             pybind11::class_<MappingWrapper> Mapping(pybind11::handle(), "Mapping", pybind11::module_local());
             bind_mapping_to<MappingWrapper>(Mapping);
         }
-    }
+    } // namespace detail
 
     // Make a python class that models collections.abc.Mapping around a C++ map-like object.
     // The caller must tie the lifespan of the map to the lifespan of the returned object.
