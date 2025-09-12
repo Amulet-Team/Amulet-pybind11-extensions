@@ -1,5 +1,4 @@
 #pragma once
-
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -67,5 +66,5 @@ namespace detail {
             + make_caster<std::conditional_t<std::is_same_v<void, T>, pybind11::none, T>>::name
             + const_name(", ") + make_caster<ExitT>::name + const_name("]");
     };
-}
-}
+} // namespace detail
+} // namespace pybind11

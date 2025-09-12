@@ -1,9 +1,8 @@
 #pragma once
+#include <pybind11/pybind11.h>
 
 #include <filesystem>
 #include <string>
-
-#include <pybind11/pybind11.h>
 
 static std::string get_version_top(std::string version)
 {

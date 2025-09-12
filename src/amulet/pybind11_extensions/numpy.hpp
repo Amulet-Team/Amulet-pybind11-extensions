@@ -24,5 +24,5 @@ namespace detail {
         static constexpr auto name
             = const_name("numpy.typing.NDArray[") + npy_format_descriptor<T>::name + const_name("]");
     };
-}
-}
+} // namespace detail
+} // namespace pybind11
