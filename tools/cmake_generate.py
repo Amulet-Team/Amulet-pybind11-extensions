@@ -36,6 +36,7 @@ def main():
             f"-DCMAKE_INSTALL_PREFIX=install",
             # test args
             f"-DTEST_AMULET_PYBIND11_EXTENSIONS_DIR={os.path.join(RootDir, 'tests')}",
+            f"-DBUILD_AMULET_PYBIND11_EXTENSIONS_TESTS=ON",
             "-B",
             "build",
         ]

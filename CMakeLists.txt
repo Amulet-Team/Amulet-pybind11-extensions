@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 project(amulet_pybind11_extensions LANGUAGES CXX)
 
+set(BUILD_AMULET_PYBIND11_EXTENSIONS_TESTS OFF CACHE BOOL "Should tests be built?")
+
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,6 +38,6 @@ foreach(FILE ${HEADERS})
     source_group(${GROUP} FILES ${FILE})
 endforeach()
 
-if (TEST_AMULET_PYBIND11_EXTENSIONS_DIR)
+if (BUILD_AMULET_PYBIND11_EXTENSIONS_TESTS)
     add_subdirectory(tests)
 endif()
