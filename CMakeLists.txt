@@ -30,6 +30,7 @@ file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.hpp)
 # Add implementation
 add_library(amulet_pybind11_extensions INTERFACE)
 target_include_directories(amulet_pybind11_extensions INTERFACE "src")
+target_include_directories(amulet_pybind11_extensions INTERFACE pybind11_INCLUDE_DIR)
 target_sources(amulet_pybind11_extensions PRIVATE ${HEADERS})
 foreach(FILE ${HEADERS})
     file(RELATIVE_PATH REL_PATH ${SOURCE_PATH} ${FILE})
