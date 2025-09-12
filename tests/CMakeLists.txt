@@ -18,8 +18,12 @@ else()
 endif()
 
 # Add pybind11
-find_package(pybind11 CONFIG REQUIRED)
-find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+if (NOT TARGET pybind11::module)
+    find_package(pybind11 CONFIG REQUIRED)
+endif()
+if (NOT TARGET amulet_pybind11_extensions)
+    find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+endif()
 
 function(add_text_ext name)
     pybind11_add_module(${name})
