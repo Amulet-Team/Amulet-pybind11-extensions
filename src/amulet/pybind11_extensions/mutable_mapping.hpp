@@ -1,5 +1,4 @@
 #pragma once
-
 #include <pybind11/pybind11.h>
 
 #include <amulet/pybind11_extensions/collections.hpp>

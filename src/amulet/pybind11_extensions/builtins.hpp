@@ -40,15 +40,15 @@ namespace pybind11_extensions {
 
 
 namespace pybind11 {
-	namespace detail {
-		template <Amulet::pybind11_extensions::detail::FixedString T>
-		struct handle_type_name<Amulet::pybind11_extensions::PyObjectStr<T>> {
-			static constexpr auto name = pybind11::detail::const_name(T.buf);
-		};
+namespace detail {
+    template <Amulet::pybind11_extensions::detail::FixedString T>
+    struct handle_type_name<Amulet::pybind11_extensions::PyObjectStr<T>> {
+        static constexpr auto name = pybind11::detail::const_name(T.buf);
+    };
 
-		template <typename cppT>
-		struct handle_type_name<Amulet::pybind11_extensions::PyObjectCpp<cppT>> {
-			static constexpr auto name = make_caster<cppT>::name;
-		};
-	}
-}
+    template <typename cppT>
+    struct handle_type_name<Amulet::pybind11_extensions::PyObjectCpp<cppT>> {
+        static constexpr auto name = make_caster<cppT>::name;
+    };
+} // namespace detail
+} // namespace pybind11
