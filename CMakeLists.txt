@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.13)
 
 project(amulet_pybind11_extensions LANGUAGES CXX)
 
+set(BUILD_AMULET_PYBIND11_EXTENSIONS_TESTS OFF CACHE BOOL "Should tests be built?")
+
 # Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,6 +30,7 @@ file(GLOB_RECURSE HEADERS LIST_DIRECTORIES false ${SOURCE_PATH}/amulet/*.hpp)
 # Add implementation
 add_library(amulet_pybind11_extensions INTERFACE)
 target_include_directories(amulet_pybind11_extensions INTERFACE "src")
+target_include_directories(amulet_pybind11_extensions INTERFACE pybind11_INCLUDE_DIR)
 target_sources(amulet_pybind11_extensions PRIVATE ${HEADERS})
 foreach(FILE ${HEADERS})
     file(RELATIVE_PATH REL_PATH ${SOURCE_PATH} ${FILE})
@@ -36,6 +39,6 @@ foreach(FILE ${HEADERS})
     source_group(${GROUP} FILES ${FILE})
 endforeach()
 
-if (TEST_AMULET_PYBIND11_EXTENSIONS_DIR)
+if (BUILD_AMULET_PYBIND11_EXTENSIONS_TESTS)
     add_subdirectory(tests)
 endif()

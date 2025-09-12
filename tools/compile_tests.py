@@ -36,8 +36,6 @@ def main() -> None:
             f"-Dpybind11_DIR={fix_path(pybind11.get_cmake_dir())}",
             f"-Damulet_pybind11_extensions_DIR={fix_path(amulet.pybind11_extensions.__path__[0])}",
             f"-DCMAKE_INSTALL_PREFIX=install",
-            # test args
-            f"-DTEST_AMULET_PYBIND11_EXTENSIONS_DIR={fix_path(TestsDir)}",
             "-B",
             "build",
         ]

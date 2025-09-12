@@ -18,8 +18,12 @@ else()
 endif()
 
 # Add pybind11
-find_package(pybind11 CONFIG REQUIRED)
-find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+if (NOT TARGET pybind11::module)
+    find_package(pybind11 CONFIG REQUIRED)
+endif()
+if (NOT TARGET amulet_pybind11_extensions)
+    find_package(amulet_pybind11_extensions CONFIG REQUIRED)
+endif()
 
 function(add_text_ext name)
     pybind11_add_module(${name})
@@ -29,7 +33,7 @@ function(add_text_ext name)
     target_compile_definitions(${name} PRIVATE COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
     target_compile_definitions(${name} PRIVATE COMPILER_VERSION="${CMAKE_CXX_COMPILER_VERSION}")
     target_sources(${name} PRIVATE ${name}.py.cpp)
-    install(TARGETS ${name} DESTINATION ${TEST_AMULET_PYBIND11_EXTENSIONS_DIR})
+    install(TARGETS ${name} DESTINATION "${CMAKE_CURRENT_LIST_DIR}")
 endfunction()
 
 # Add python extensions
