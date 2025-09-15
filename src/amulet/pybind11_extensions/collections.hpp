@@ -140,44 +140,44 @@ namespace pybind11 {
 namespace detail {
     template <typename T>
     struct handle_type_name<Amulet::pybind11_extensions::collections::Iterator<T>> {
-        static constexpr auto name = const_name("collections.abc.Iterator[") + make_caster<T>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.Iterator[") + return_descr(make_caster<T>::name) + const_name("]");
     };
 
     template <typename T>
     struct handle_type_name<Amulet::pybind11_extensions::collections::Iterable<T>> {
-        static constexpr auto name = const_name("collections.abc.Iterable[") + make_caster<T>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.Iterable[") + return_descr(make_caster<T>::name) + const_name("]");
     };
 
     template <typename T>
     struct handle_type_name<Amulet::pybind11_extensions::collections::Sequence<T>> {
-        static constexpr auto name = const_name("collections.abc.Sequence[") + make_caster<T>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.Sequence[") + return_descr(make_caster<T>::name) + const_name("]");
     };
 
     template <typename K, typename V>
     struct handle_type_name<Amulet::pybind11_extensions::collections::Mapping<K, V>> {
-        static constexpr auto name = const_name("collections.abc.Mapping[") + make_caster<K>::name + const_name(", ") + make_caster<V>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.Mapping[") + return_descr(make_caster<K>::name) + const_name(", ") + return_descr(make_caster<V>::name) + const_name("]");
     };
 
     template <typename K, typename V>
     struct handle_type_name<Amulet::pybind11_extensions::collections::MutableMapping<K, V>> {
-        static constexpr auto name = const_name("collections.abc.MutableMapping[") + make_caster<K>::name + const_name(", ")
-            + make_caster<V>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.MutableMapping[") + return_descr(make_caster<K>::name) + const_name(", ")
+            + return_descr(make_caster<V>::name) + const_name("]");
     };
 
     template <typename K>
     struct handle_type_name<Amulet::pybind11_extensions::collections::KeysView<K>> {
-        static constexpr auto name = const_name("collections.abc.KeysView[") + make_caster<K>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.KeysView[") + return_descr(make_caster<K>::name) + const_name("]");
     };
 
     template <typename V>
     struct handle_type_name<Amulet::pybind11_extensions::collections::ValuesView<V>> {
-        static constexpr auto name = const_name("collections.abc.ValuesView[") + make_caster<V>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.ValuesView[") + return_descr(make_caster<V>::name) + const_name("]");
     };
 
     template <typename K, typename V>
     struct handle_type_name<Amulet::pybind11_extensions::collections::ItemsView<K, V>> {
-        static constexpr auto name = const_name("collections.abc.ItemsView[") + make_caster<K>::name + const_name(", ")
-            + make_caster<V>::name + const_name("]");
+        static constexpr auto name = const_name("collections.abc.ItemsView[") + return_descr(make_caster<K>::name) + const_name(", ")
+            + return_descr(make_caster<V>::name) + const_name("]");
     };
 }
 }
