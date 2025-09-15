@@ -19,6 +19,7 @@ void init_test_numpy(py::module);
 void init_test_py_module(py::module);
 void init_test_pybind11(py::module);
 void init_test_sequence(py::module);
+void init_test_mutable_sequence(py::module);
 void init_test_types(py::module);
 
 void init_module(py::module m){
@@ -36,6 +37,7 @@ void init_module(py::module m){
     init_test_py_module(m);
     init_test_pybind11(m);
     init_test_sequence(m);
+    init_test_mutable_sequence(m);
     init_test_types(m);
 }
 
