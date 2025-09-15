@@ -146,7 +146,10 @@ class SequenceTestCase(unittest.TestCase):
         sequence.extend([6, 7, 8, 9, 10])
         self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], list(sequence))
         sequence.extend(sequence)
-        self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], list(sequence))
+        self.assertEqual(
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            list(sequence),
+        )
 
     def test_pop(self) -> None:
         sequence = TestMutableSequence([1, 2, 3, 4, 5])

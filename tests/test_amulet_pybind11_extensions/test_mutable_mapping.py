@@ -5,7 +5,9 @@ from weakref import ref
 
 class MutableMappingTestCase(unittest.TestCase):
     def test_mutable_mapping(self) -> None:
-        from test_amulet_pybind11_extensions.test_mutable_mapping_ import TestMutableMapping
+        from test_amulet_pybind11_extensions.test_mutable_mapping_ import (
+            TestMutableMapping,
+        )
 
         mapping = TestMutableMapping({"1": 2, "3": 4, "5": 6})
 
@@ -108,7 +110,9 @@ class MutableMappingTestCase(unittest.TestCase):
         )
 
     def test_iter_lifespan(self) -> None:
-        from test_amulet_pybind11_extensions.test_mutable_mapping_ import TestMutableMapping
+        from test_amulet_pybind11_extensions.test_mutable_mapping_ import (
+            TestMutableMapping,
+        )
 
         mapping = TestMutableMapping({"1": 2, "3": 4, "5": 6})
         it = iter(mapping)

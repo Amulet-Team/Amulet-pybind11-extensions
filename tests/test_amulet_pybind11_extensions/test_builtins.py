@@ -1,6 +1,11 @@
 import unittest
 
-from test_amulet_pybind11_extensions.test_builtins_ import MyPyClass, func1, func2, func3
+from test_amulet_pybind11_extensions.test_builtins_ import (
+    MyPyClass,
+    func1,
+    func2,
+    func3,
+)
 
 
 class BuiltinsTestCase(unittest.TestCase):
