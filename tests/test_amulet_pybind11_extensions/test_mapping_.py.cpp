@@ -50,15 +50,16 @@ void init_test_mapping(py::module m_parent)
             return py::make_key_iterator(self.map);
         },
         py::keep_alive<0, 1>());
-    pyext::collections::def_Mapping_repr(TestMapping);
-    pyext::collections::def_Mapping_contains(TestMapping);
-    pyext::collections::def_Mapping_keys(TestMapping);
-    pyext::collections::def_Mapping_values(TestMapping);
-    pyext::collections::def_Mapping_items(TestMapping);
-    pyext::collections::def_Mapping_get(TestMapping);
-    pyext::collections::def_Mapping_eq(TestMapping);
-    pyext::collections::def_Mapping_hash(TestMapping);
-    pyext::collections::register_Mapping(TestMapping);
+    using Map = pyext::collections::Mapping<int, int>;
+    Map::def_repr(TestMapping);
+    Map::def_contains(TestMapping);
+    Map::def_keys(TestMapping);
+    Map::def_values(TestMapping);
+    Map::def_items(TestMapping);
+    Map::def_get(TestMapping);
+    Map::def_eq(TestMapping);
+    Map::def_hash(TestMapping);
+    Map::register_cls(TestMapping);
 
     m.def("get_global_int_map", []() {
         return pyext::make_mapping(GlobalIntMap);
