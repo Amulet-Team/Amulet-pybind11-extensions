@@ -17,6 +17,8 @@ namespace pybind11_extensions {
             static void def_pop(ClsT cls)
             {
                 pybind11::object marker = pybind11::module::import("builtins").attr("Ellipsis");
+                pybind11::options options;
+                options.disable_function_signatures();
                 cls.def(
                     "pop",
                     [marker](
@@ -39,8 +41,16 @@ namespace pybind11_extensions {
                         self.attr("__delitem__")(key);
                         return value;
                     },
+                    pybind11::doc((
+                        std::string("pop(*args, **kwargs)\n")
+                        + std::string("Overloaded function.\n")
+                        + std::string("1. pop(self, key: ") + generate_arg_signature<KT>() + std::string(") -> ") + generate_return_signature<VT>() + std::string("\n")
+                        + std::string("2. pop(self, key: ") + generate_arg_signature<KT>() + std::string(", default: ") + generate_return_signature<VT>() + std::string(") -> ") + generate_return_signature<VT>() + std::string("\n")
+                        + std::string("3. pop[T](self, key: ") + generate_arg_signature<KT>() + std::string(", default: T) -> ") + generate_return_signature<VT>() + std::string(" | T\n"))
+                            .c_str()),
                     pybind11::arg("key"),
                     pybind11::arg("default") = marker);
+                options.enable_function_signatures();
             }
 
             template <typename ClsT>
