@@ -386,23 +386,23 @@ namespace pybind11 {
 namespace detail {
     template <typename KT>
     struct handle_type_name<Amulet::pybind11_extensions::collections::KeysView<KT>> {
-        static constexpr auto name = const_name("collections.abc.KeysView[") + return_descr(make_caster<KT>::name) + const_name("]");
+        static constexpr auto name = const_name("collections.abc.KeysView[") + make_caster<KT>::name + const_name("]");
     };
 
     template <typename VT>
     struct handle_type_name<Amulet::pybind11_extensions::collections::ValuesView<VT>> {
-        static constexpr auto name = const_name("collections.abc.ValuesView[") + return_descr(make_caster<VT>::name) + const_name("]");
+        static constexpr auto name = const_name("collections.abc.ValuesView[") + make_caster<VT>::name + const_name("]");
     };
 
     template <typename KT, typename VT>
     struct handle_type_name<Amulet::pybind11_extensions::collections::ItemsView<KT, VT>> {
-        static constexpr auto name = const_name("collections.abc.ItemsView[") + return_descr(make_caster<KT>::name) + const_name(", ")
-            + return_descr(make_caster<VT>::name) + const_name("]");
+        static constexpr auto name = const_name("collections.abc.ItemsView[") + make_caster<KT>::name + const_name(", ")
+            + make_caster<VT>::name + const_name("]");
     };
 
     template <typename KT, typename VT>
     struct handle_type_name<Amulet::pybind11_extensions::collections::Mapping<KT, VT>> {
-        static constexpr auto name = const_name("collections.abc.Mapping[") + return_descr(make_caster<KT>::name) + const_name(", ") + return_descr(make_caster<VT>::name) + const_name("]");
+        static constexpr auto name = const_name("collections.abc.Mapping[") + make_caster<KT>::name + const_name(", ") + make_caster<VT>::name + const_name("]");
     };
 } // namespace detail
 } // namespace pybind11

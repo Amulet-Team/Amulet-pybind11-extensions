@@ -310,8 +310,8 @@ namespace pybind11 {
 namespace detail {
     template <typename KT, typename VT>
     struct handle_type_name<Amulet::pybind11_extensions::collections::MutableMapping<KT, VT>> {
-        static constexpr auto name = const_name("collections.abc.MutableMapping[") + return_descr(make_caster<KT>::name) + const_name(", ")
-            + return_descr(make_caster<VT>::name) + const_name("]");
+        static constexpr auto name = const_name("collections.abc.MutableMapping[") + make_caster<KT>::name + const_name(", ")
+            + make_caster<VT>::name + const_name("]");
     };
 } // namespace detail
 } // namespace pybind11
