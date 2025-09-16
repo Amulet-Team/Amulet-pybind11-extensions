@@ -109,9 +109,9 @@ namespace pybind11_extensions {
                         hasattr,
                         PyMapping](
                         pybind11::object self,
-                        pybind11::object other,
-                        pybind11::kwargs kwargs) {
-                        if (py::hasattr(other, "keys")) {
+                        PyObjectCpp<std::variant<Mapping<KT, VT>, Iterable<pybind11::typing::Tuple<KT, VT>>>> other,
+                        pybind11::KWArgs<VT> kwargs) {
+                        if (pybind11::hasattr(other, "keys")) {
                             pybind11::object keys = other.attr("keys")();
                             for (auto it = keys.begin(); it != keys.end(); it++) {
                                 self.attr("__setitem__")(*it, other.attr("__getitem__")(*it));
