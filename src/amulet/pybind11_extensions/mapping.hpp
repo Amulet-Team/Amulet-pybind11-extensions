@@ -72,7 +72,8 @@ namespace pybind11_extensions {
                                 throw;
                             }
                         }
-                    });
+                    },
+                    pybind11::arg("item"));
             }
 
             template <typename ClsT>
@@ -154,7 +155,8 @@ namespace pybind11_extensions {
                             return NotImplemented;
                         }
                         return dict(self.attr("items")()).equal(dict(other.attr("items")()).cast<pybind11::dict>());
-                    });
+                    },
+                    pybind11::arg("other"));
             }
 
             template <typename ClsT>
