@@ -54,7 +54,7 @@ void init_test_collections(py::module m_parent)
         }
         return iterator;
     });
-    m.def("test_iterator_int", [](pyext::collections::Iterator<int> iterator, py::list objs) {
+    m.def("test_iterator_int", [](pyext::collections::Iterator<py::int_> iterator, py::list objs) {
         for (; iterator != iterator.sentinel(); iterator++) {
             objs.append(*iterator);
         }
@@ -135,7 +135,7 @@ void init_test_collections(py::module m_parent)
         for (const py::object& obj : sequence) {
             objs.append(obj);
         }
-        return sequence; 
+        return sequence;
     });
     m.def("test_sequence_int", [](pyext::collections::Sequence<int> sequence, py::list objs) {
         ENSURE(sequence.size() == 3)
@@ -151,24 +151,24 @@ void init_test_collections(py::module m_parent)
         }
         return sequence;
     });
-    
-    m.def("test_map_obj", [](pyext::collections::Mapping<int, py::object> obj) { return obj; });
-    m.def("test_map_int", [](pyext::collections::Mapping<int, int> obj) { return obj; });
-    m.def("test_map_cls", [](pyext::collections::Mapping<int, TestToken> obj) { return obj; });
 
-    m.def("test_mutable_map_obj", [](pyext::collections::MutableMapping<int, py::object> obj) { return obj; });
-    m.def("test_mutable_map_int", [](pyext::collections::MutableMapping<int, int> obj) { return obj; });
-    m.def("test_mutable_map_cls", [](pyext::collections::MutableMapping<int, TestToken> obj) { return obj; });
+    m.def("test_map_obj", [](pyext::collections::Mapping<py::int_, py::object> obj) { return obj; });
+    m.def("test_map_int", [](pyext::collections::Mapping<py::int_, py::int_> obj) { return obj; });
+    m.def("test_map_cls", [](pyext::collections::Mapping<py::int_, TestToken> obj) { return obj; });
+
+    m.def("test_mutable_map_obj", [](pyext::collections::MutableMapping<py::int_, py::object> obj) { return obj; });
+    m.def("test_mutable_map_int", [](pyext::collections::MutableMapping<py::int_, py::int_> obj) { return obj; });
+    m.def("test_mutable_map_cls", [](pyext::collections::MutableMapping<py::int_, TestToken> obj) { return obj; });
 
     m.def("test_keys_view_obj", [](pyext::collections::KeysView<py::object> obj) { return obj; });
-    m.def("test_keys_view_int", [](pyext::collections::KeysView<int> obj) { return obj; });
+    m.def("test_keys_view_int", [](pyext::collections::KeysView<py::int_> obj) { return obj; });
     m.def("test_keys_view_cls", [](pyext::collections::KeysView<TestToken> obj) { return obj; });
 
     m.def("test_values_view_obj", [](pyext::collections::ValuesView<py::object> obj) { return obj; });
-    m.def("test_values_view_int", [](pyext::collections::ValuesView<int> obj) { return obj; });
+    m.def("test_values_view_int", [](pyext::collections::ValuesView<py::int_> obj) { return obj; });
     m.def("test_values_view_cls", [](pyext::collections::ValuesView<TestToken> obj) { return obj; });
 
-    m.def("test_items_view_obj", [](pyext::collections::ItemsView<int, py::object> obj) { return obj; });
-    m.def("test_items_view_int", [](pyext::collections::ItemsView<int, int> obj) { return obj; });
-    m.def("test_items_view_cls", [](pyext::collections::ItemsView<int, TestToken> obj) { return obj; });
+    m.def("test_items_view_obj", [](pyext::collections::ItemsView<py::int_, py::object> obj) { return obj; });
+    m.def("test_items_view_int", [](pyext::collections::ItemsView<py::int_, py::int_> obj) { return obj; });
+    m.def("test_items_view_cls", [](pyext::collections::ItemsView<py::int_, TestToken> obj) { return obj; });
 }

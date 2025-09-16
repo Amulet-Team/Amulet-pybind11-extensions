@@ -102,7 +102,7 @@ namespace pybind11 {
 namespace detail {
     template <typename T>
     struct handle_type_name<Amulet::pybind11_extensions::collections::Iterator<T>> {
-        static constexpr auto name = const_name("collections.abc.Iterator[") + return_descr(make_caster<T>::name) + const_name("]");
+        static constexpr auto name = const_name("collections.abc.Iterator[") + make_caster<T>::name + const_name("]");
     };
 } // namespace detail
 } // namespace pybind11
