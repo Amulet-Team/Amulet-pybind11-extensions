@@ -5,8 +5,6 @@
 #include <amulet/pybind11_extensions/mapping.hpp>
 #include <amulet/pybind11_extensions/pybind11.hpp>
 
-namespace py = pybind11;
-
 namespace Amulet {
 namespace pybind11_extensions {
     namespace collections {
@@ -19,6 +17,8 @@ namespace pybind11_extensions {
             static void def_pop(ClsT cls)
             {
                 pybind11::object marker = pybind11::module::import("builtins").attr("Ellipsis");
+                pybind11::options options;
+                options.disable_function_signatures();
                 cls.def(
                     "pop",
                     [marker](
@@ -41,8 +41,16 @@ namespace pybind11_extensions {
                         self.attr("__delitem__")(key);
                         return value;
                     },
+                    pybind11::doc((
+                        std::string("pop(*args, **kwargs)\n")
+                        + std::string("Overloaded function.\n")
+                        + std::string("1. pop(self, key: ") + generate_arg_signature<KT>() + std::string(") -> ") + generate_return_signature<VT>() + std::string("\n")
+                        + std::string("2. pop(self, key: ") + generate_arg_signature<KT>() + std::string(", default: ") + generate_return_signature<VT>() + std::string(") -> ") + generate_return_signature<VT>() + std::string("\n")
+                        + std::string("3. pop[T](self, key: ") + generate_arg_signature<KT>() + std::string(", default: T) -> ") + generate_return_signature<VT>() + std::string(" | T\n"))
+                            .c_str()),
                     pybind11::arg("key"),
                     pybind11::arg("default") = marker);
+                options.enable_function_signatures();
             }
 
             template <typename ClsT>
@@ -101,9 +109,9 @@ namespace pybind11_extensions {
                         hasattr,
                         PyMapping](
                         pybind11::object self,
-                        pybind11::object other,
-                        pybind11::kwargs kwargs) {
-                        if (py::hasattr(other, "keys")) {
+                        PyObjectCpp<std::variant<Mapping<KT, VT>, Iterable<pybind11::typing::Tuple<KT, VT>>>> other,
+                        pybind11::KWArgs<VT> kwargs) {
+                        if (pybind11::hasattr(other, "keys")) {
                             pybind11::object keys = other.attr("keys")();
                             for (auto it = keys.begin(); it != keys.end(); it++) {
                                 self.attr("__setitem__")(*it, other.attr("__getitem__")(*it));
@@ -126,7 +134,7 @@ namespace pybind11_extensions {
             }
 
             template <typename ClsT>
-            static void def_setdefault(ClsT cls, pybind11_extensions::PyObjectCpp<VT> default_value = py::none())
+            static void def_setdefault(ClsT cls, pybind11_extensions::PyObjectCpp<VT> default_value = pybind11::none())
             {
                 pybind11::options options;
                 options.disable_function_signatures();
@@ -184,14 +192,14 @@ namespace pybind11_extensions {
         [[deprecated("Moved into Amulet::pybind11_extensions::collections::MutableMapping")]]
         void def_MutableMapping_clear(ClsT cls)
         {
-            MutableMapping<py::object, py::object>::def_clear(cls);
+            MutableMapping<pybind11::object, pybind11::object>::def_clear(cls);
         }
 
         template <typename ClsT>
         [[deprecated("Moved into Amulet::pybind11_extensions::collections::MutableMapping")]]
         void def_MutableMapping_update(ClsT cls)
         {
-            MutableMapping<py::object, py::object>::def_update(cls);
+            MutableMapping<pybind11::object, pybind11::object>::def_update(cls);
         }
 
         template <typename KT = pybind11::object, typename VT = pybind11::object, typename ClsT>
@@ -205,7 +213,7 @@ namespace pybind11_extensions {
         [[deprecated("Moved into Amulet::pybind11_extensions::collections::MutableMapping")]]
         void register_MutableMapping(ClsT cls)
         {
-            MutableMapping<py::object, py::object>::register_cls(cls);
+            MutableMapping<pybind11::object, pybind11::object>::register_cls(cls);
         }
 
     } // namespace collections
@@ -292,7 +300,7 @@ namespace pybind11_extensions {
     }
 
     // Make a python class that models collections.abc.MutableMapping around a C++ map-like object.
-    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, py::object or any object keeping the map alive.
+    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, pybind11::object or any object keeping the map alive.
     template <typename MapT, typename OwnerT>
     collections::MutableMapping<typename MapT::key_type, typename MapT::mapped_type> make_mutable_mapping(MapT& map, OwnerT&& owner)
     {

@@ -100,7 +100,8 @@ namespace pybind11_extensions {
                     "remove",
                     [](pybind11::object self, PyObjectCpp<T> value) {
                         self.attr("__delitem__")(self.attr("index")(value));
-                    });
+                    },
+                    pybind11::arg("value"));
             }
 
             template <typename ClsT>
@@ -111,7 +112,8 @@ namespace pybind11_extensions {
                     [](pybind11::object self, pybind11::typing::Iterable<T> values) {
                         self.attr("extend")(values);
                         return self;
-                    });
+                    },
+                    pybind11::arg("values"));
             }
 
             template <typename ClsT>
