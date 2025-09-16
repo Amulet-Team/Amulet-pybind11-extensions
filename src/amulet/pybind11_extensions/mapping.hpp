@@ -72,7 +72,8 @@ namespace pybind11_extensions {
                                 throw;
                             }
                         }
-                    });
+                    },
+                    pybind11::arg("item"));
             }
 
             template <typename ClsT>
@@ -154,7 +155,8 @@ namespace pybind11_extensions {
                             return NotImplemented;
                         }
                         return dict(self.attr("items")()).equal(dict(other.attr("items")()).cast<pybind11::dict>());
-                    });
+                    },
+                    pybind11::arg("other"));
             }
 
             template <typename ClsT>
@@ -368,7 +370,7 @@ namespace pybind11_extensions {
     }
 
     // Make a python class that models collections.abc.Mapping around a C++ map-like object.
-    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, py::object or any object keeping the map alive.
+    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, pybind11::object or any object keeping the map alive.
     template <typename MapT, typename OwnerT>
     collections::Mapping<typename MapT::key_type, typename MapT::mapped_type> make_mapping(const MapT& map, OwnerT&& owner)
     {

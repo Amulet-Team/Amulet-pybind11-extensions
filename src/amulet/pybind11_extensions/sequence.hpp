@@ -79,7 +79,8 @@ namespace pybind11_extensions {
                             start += step;
                         }
                         return out;
-                    });
+                    },
+                    pybind11::arg("item"));
             }
 
             template <typename ClsT>
@@ -96,7 +97,8 @@ namespace pybind11_extensions {
                             ++it;
                         }
                         return false;
-                    });
+                    },
+                    pybind11::arg("item"));
             }
 
             template <typename ClsT>
@@ -159,7 +161,9 @@ namespace pybind11_extensions {
                         }
                         throw pybind11::value_error("");
                     },
-                    pybind11::arg("value"), pybind11::arg("start") = 0, pybind11::arg("stop") = std::numeric_limits<Py_ssize_t>::max());
+                    pybind11::arg("value"),
+                    pybind11::arg("start") = 0,
+                    pybind11::arg("stop") = std::numeric_limits<Py_ssize_t>::max());
             }
 
             template <typename ClsT>
