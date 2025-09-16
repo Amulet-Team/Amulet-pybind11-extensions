@@ -5,8 +5,6 @@
 #include <amulet/pybind11_extensions/mapping.hpp>
 #include <amulet/pybind11_extensions/pybind11.hpp>
 
-namespace py = pybind11;
-
 namespace Amulet {
 namespace pybind11_extensions {
     namespace collections {
@@ -126,7 +124,7 @@ namespace pybind11_extensions {
             }
 
             template <typename ClsT>
-            static void def_setdefault(ClsT cls, pybind11_extensions::PyObjectCpp<VT> default_value = py::none())
+            static void def_setdefault(ClsT cls, pybind11_extensions::PyObjectCpp<VT> default_value = pybind11::none())
             {
                 pybind11::options options;
                 options.disable_function_signatures();
@@ -184,14 +182,14 @@ namespace pybind11_extensions {
         [[deprecated("Moved into Amulet::pybind11_extensions::collections::MutableMapping")]]
         void def_MutableMapping_clear(ClsT cls)
         {
-            MutableMapping<py::object, py::object>::def_clear(cls);
+            MutableMapping<pybind11::object, pybind11::object>::def_clear(cls);
         }
 
         template <typename ClsT>
         [[deprecated("Moved into Amulet::pybind11_extensions::collections::MutableMapping")]]
         void def_MutableMapping_update(ClsT cls)
         {
-            MutableMapping<py::object, py::object>::def_update(cls);
+            MutableMapping<pybind11::object, pybind11::object>::def_update(cls);
         }
 
         template <typename KT = pybind11::object, typename VT = pybind11::object, typename ClsT>
@@ -205,7 +203,7 @@ namespace pybind11_extensions {
         [[deprecated("Moved into Amulet::pybind11_extensions::collections::MutableMapping")]]
         void register_MutableMapping(ClsT cls)
         {
-            MutableMapping<py::object, py::object>::register_cls(cls);
+            MutableMapping<pybind11::object, pybind11::object>::register_cls(cls);
         }
 
     } // namespace collections
@@ -292,7 +290,7 @@ namespace pybind11_extensions {
     }
 
     // Make a python class that models collections.abc.MutableMapping around a C++ map-like object.
-    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, py::object or any object keeping the map alive.
+    // Owner must keep the map alive until it is destroyed. It can be a smart pointer, pybind11::object or any object keeping the map alive.
     template <typename MapT, typename OwnerT>
     collections::MutableMapping<typename MapT::key_type, typename MapT::mapped_type> make_mutable_mapping(MapT& map, OwnerT&& owner)
     {

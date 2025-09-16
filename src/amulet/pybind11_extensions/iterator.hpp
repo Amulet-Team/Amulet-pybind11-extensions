@@ -71,7 +71,7 @@ namespace pybind11_extensions {
     } // namespace collections
 
     // Create a python iterator around a C++ class that implements method next()
-    // Next must throw py::stop_iteration() to signal the end of the iterator.
+    // Next must throw pybind11::stop_iteration() to signal the end of the iterator.
     template <
         pybind11::return_value_policy Policy = pybind11::return_value_policy::automatic,
         typename It,

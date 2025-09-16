@@ -3,7 +3,7 @@
 
 #include <amulet/pybind11_extensions/builtins.hpp>
 
-// This extension adds a py::object subclass for types.NotImplementedType.
+// This extension adds a pybind11::object subclass for types.NotImplementedType.
 // This is used as a return in comparison operators.
 
 namespace Amulet {
