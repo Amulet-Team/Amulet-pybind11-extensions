@@ -71,7 +71,11 @@ class MappingTestCase(unittest.TestCase):
         self.assertIsNotNone(mapping_ref())
 
     def test_make_mapping(self):
-        from test_amulet_pybind11_extensions.test_mapping_ import get_global_int_map, make_int_int_map, make_str_int_map
+        from test_amulet_pybind11_extensions.test_mapping_ import (
+            get_global_int_map,
+            make_int_int_map,
+            make_str_int_map,
+        )
 
         m = get_global_int_map()
         self.assertEqual(20, m[10])
@@ -128,7 +132,11 @@ class MappingTestCase(unittest.TestCase):
         self.assertNotIn("6", m)
 
     def test_make_mapping_lifespan(self) -> None:
-        from test_amulet_pybind11_extensions.test_mapping_ import get_global_int_map, make_int_int_map, make_str_int_map
+        from test_amulet_pybind11_extensions.test_mapping_ import (
+            get_global_int_map,
+            make_int_int_map,
+            make_str_int_map,
+        )
 
         m = get_global_int_map()
         m_ref = ref(m)

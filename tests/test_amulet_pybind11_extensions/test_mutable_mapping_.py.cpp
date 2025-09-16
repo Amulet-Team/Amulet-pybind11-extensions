@@ -61,20 +61,21 @@ void init_test_mutable_mapping(py::module m_parent)
             return py::make_key_iterator(self.map);
         },
         py::keep_alive<0, 1>());
-    pyext::collections::def_Mapping_repr(TestMutableMapping);
-    pyext::collections::def_Mapping_contains(TestMutableMapping);
-    pyext::collections::def_Mapping_keys(TestMutableMapping);
-    pyext::collections::def_Mapping_values(TestMutableMapping);
-    pyext::collections::def_Mapping_items(TestMutableMapping);
-    pyext::collections::def_Mapping_get(TestMutableMapping);
-    pyext::collections::def_Mapping_eq(TestMutableMapping);
-    pyext::collections::def_Mapping_hash(TestMutableMapping);
-    pyext::collections::def_MutableMapping_pop(TestMutableMapping);
-    pyext::collections::def_MutableMapping_popitem(TestMutableMapping);
-    pyext::collections::def_MutableMapping_clear(TestMutableMapping);
-    pyext::collections::def_MutableMapping_update(TestMutableMapping);
-    pyext::collections::def_MutableMapping_setdefault(TestMutableMapping);
-    pyext::collections::register_MutableMapping(TestMutableMapping);
+    using Map = pyext::collections::MutableMapping<std::string, int>;
+    Map::def_repr(TestMutableMapping);
+    Map::def_contains(TestMutableMapping);
+    Map::def_keys(TestMutableMapping);
+    Map::def_values(TestMutableMapping);
+    Map::def_items(TestMutableMapping);
+    Map::def_get(TestMutableMapping);
+    Map::def_eq(TestMutableMapping);
+    Map::def_hash(TestMutableMapping);
+    Map::def_pop(TestMutableMapping);
+    Map::def_popitem(TestMutableMapping);
+    Map::def_clear(TestMutableMapping);
+    Map::def_update(TestMutableMapping);
+    Map::def_setdefault(TestMutableMapping);
+    Map::register_cls(TestMutableMapping);
 
     m.def("get_global_int_map", []() {
         return pyext::make_mutable_mapping(GlobalIntMap);

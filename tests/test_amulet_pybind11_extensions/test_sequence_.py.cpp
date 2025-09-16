@@ -27,11 +27,12 @@ void init_test_sequence(py::module m_parent)
     TestSequence.def(py::init());
     TestSequence.def("__getitem__", &detail::TestSequence::get);
     TestSequence.def("__len__", &detail::TestSequence::size);
-    pyext::collections::def_Sequence_getitem_slice(TestSequence);
-    pyext::collections::def_Sequence_contains(TestSequence);
-    pyext::collections::def_Sequence_iter(TestSequence);
-    pyext::collections::def_Sequence_reversed(TestSequence);
-    pyext::collections::def_Sequence_index(TestSequence);
-    pyext::collections::def_Sequence_count(TestSequence);
-    pyext::collections::register_Sequence(TestSequence);
+    using Sequence = pyext::collections::Sequence<int>;
+    Sequence::def_getitem_slice(TestSequence);
+    Sequence::def_contains(TestSequence);
+    Sequence::def_iter(TestSequence);
+    Sequence::def_reversed(TestSequence);
+    Sequence::def_index(TestSequence);
+    Sequence::def_count(TestSequence);
+    Sequence::register_cls(TestSequence);
 }
