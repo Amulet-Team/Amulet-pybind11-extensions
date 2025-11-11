@@ -47,8 +47,8 @@ class TestMutableMapping:
     def update(
         self,
         other: (
-            collections.abc.Mapping[str, typing.SupportsInt]
-            | collections.abc.Iterable[tuple[str, typing.SupportsInt]]
+            collections.abc.Mapping[str, int]
+            | collections.abc.Iterable[tuple[str, int]]
         ) = (),
         **kwargs: typing.SupportsInt,
     ) -> None: ...
