@@ -70,66 +70,66 @@ class MappingTestCase(unittest.TestCase):
         del mapping
         self.assertIsNotNone(mapping_ref())
 
-    def test_make_mapping(self):
+    def test_make_mapping(self) -> None:
         from test_amulet_pybind11_extensions.test_mapping_ import (
             get_global_int_map,
             make_int_int_map,
             make_str_int_map,
         )
 
-        m = get_global_int_map()
-        self.assertEqual(20, m[10])
-        self.assertEqual(40, m[30])
-        self.assertEqual(60, m[50])
-        it = iter(m)
-        self.assertEqual(10, next(it))
-        self.assertEqual(30, next(it))
-        self.assertEqual(50, next(it))
+        int_int_map = get_global_int_map()
+        self.assertEqual(20, int_int_map[10])
+        self.assertEqual(40, int_int_map[30])
+        self.assertEqual(60, int_int_map[50])
+        int_int_it = iter(int_int_map)
+        self.assertEqual(10, next(int_int_it))
+        self.assertEqual(30, next(int_int_it))
+        self.assertEqual(50, next(int_int_it))
         with self.assertRaises(StopIteration):
-            next(it)
-        self.assertEqual(3, len(m))
-        self.assertIn(10, m)
-        self.assertNotIn(20, m)
-        self.assertIn(30, m)
-        self.assertNotIn(40, m)
-        self.assertIn(50, m)
-        self.assertNotIn(60, m)
+            next(int_int_it)
+        self.assertEqual(3, len(int_int_map))
+        self.assertIn(10, int_int_map)
+        self.assertNotIn(20, int_int_map)
+        self.assertIn(30, int_int_map)
+        self.assertNotIn(40, int_int_map)
+        self.assertIn(50, int_int_map)
+        self.assertNotIn(60, int_int_map)
 
-        m = make_int_int_map()
-        self.assertEqual(2, m[1])
-        self.assertEqual(4, m[3])
-        self.assertEqual(6, m[5])
-        it = iter(m)
-        self.assertEqual(1, next(it))
-        self.assertEqual(3, next(it))
-        self.assertEqual(5, next(it))
+        int_int_map = make_int_int_map()
+        self.assertEqual(2, int_int_map[1])
+        self.assertEqual(4, int_int_map[3])
+        self.assertEqual(6, int_int_map[5])
+        int_int_it = iter(int_int_map)
+        self.assertEqual(1, next(int_int_it))
+        self.assertEqual(3, next(int_int_it))
+        self.assertEqual(5, next(int_int_it))
         with self.assertRaises(StopIteration):
-            next(it)
-        self.assertEqual(3, len(m))
-        self.assertIn(1, m)
-        self.assertNotIn(2, m)
-        self.assertIn(3, m)
-        self.assertNotIn(4, m)
-        self.assertIn(5, m)
-        self.assertNotIn(6, m)
+            next(int_int_it)
+        self.assertEqual(3, len(int_int_map))
+        self.assertIn(1, int_int_map)
+        self.assertNotIn(2, int_int_map)
+        self.assertIn(3, int_int_map)
+        self.assertNotIn(4, int_int_map)
+        self.assertIn(5, int_int_map)
+        self.assertNotIn(6, int_int_map)
 
-        m = make_str_int_map()
-        self.assertEqual(2, m["1"])
-        self.assertEqual(4, m["3"])
-        self.assertEqual(6, m["5"])
-        it = iter(m)
-        self.assertEqual("1", next(it))
-        self.assertEqual("3", next(it))
-        self.assertEqual("5", next(it))
+        str_int_map = make_str_int_map()
+        self.assertEqual(2, str_int_map["1"])
+        self.assertEqual(4, str_int_map["3"])
+        self.assertEqual(6, str_int_map["5"])
+        str_int_it = iter(str_int_map)
+        self.assertEqual("1", next(str_int_it))
+        self.assertEqual("3", next(str_int_it))
+        self.assertEqual("5", next(str_int_it))
         with self.assertRaises(StopIteration):
-            next(it)
-        self.assertEqual(3, len(m))
-        self.assertIn("1", m)
-        self.assertNotIn("2", m)
-        self.assertIn("3", m)
-        self.assertNotIn("4", m)
-        self.assertIn("5", m)
-        self.assertNotIn("6", m)
+            next(str_int_it)
+        self.assertEqual(3, len(str_int_map))
+        self.assertIn("1", str_int_map)
+        self.assertNotIn("2", str_int_map)
+        self.assertIn("3", str_int_map)
+        self.assertNotIn("4", str_int_map)
+        self.assertIn("5", str_int_map)
+        self.assertNotIn("6", str_int_map)
 
     def test_make_mapping_lifespan(self) -> None:
         from test_amulet_pybind11_extensions.test_mapping_ import (
@@ -138,26 +138,26 @@ class MappingTestCase(unittest.TestCase):
             make_str_int_map,
         )
 
-        m = get_global_int_map()
-        m_ref = ref(m)
-        it = iter(m)
-        del m
-        self.assertIsNotNone(m_ref())
-        self.assertEqual(10, next(it))
+        int_int_map = get_global_int_map()
+        int_int_map_ref = ref(int_int_map)
+        int_int_it = iter(int_int_map)
+        del int_int_map
+        self.assertIsNotNone(int_int_map_ref())
+        self.assertEqual(10, next(int_int_it))
 
-        m = make_int_int_map()
-        m_ref = ref(m)
-        it = iter(m)
-        del m
-        self.assertIsNotNone(m_ref())
-        self.assertEqual(1, next(it))
+        int_int_map = make_int_int_map()
+        int_int_map_ref = ref(int_int_map)
+        int_int_it = iter(int_int_map)
+        del int_int_map
+        self.assertIsNotNone(int_int_map_ref())
+        self.assertEqual(1, next(int_int_it))
 
-        m = make_str_int_map()
-        m_ref = ref(m)
-        it = iter(m)
-        del m
-        self.assertIsNotNone(m_ref())
-        self.assertEqual("1", next(it))
+        str_int_map = make_str_int_map()
+        str_int_map_ref = ref(str_int_map)
+        str_int_it = iter(str_int_map)
+        del str_int_map
+        self.assertIsNotNone(str_int_map_ref())
+        self.assertEqual("1", next(str_int_it))
 
 
 if __name__ == "__main__":

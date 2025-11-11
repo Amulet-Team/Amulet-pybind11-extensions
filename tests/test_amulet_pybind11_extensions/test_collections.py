@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import unittest
-from typing import Callable
+from typing import Callable, Any
 from collections.abc import Iterable, Iterator, Sequence
 
 from test_amulet_pybind11_extensions.test_collections_ import (
@@ -37,21 +37,21 @@ class CollectionsTestCase(unittest.TestCase):
     def test_collections(self) -> None:
         self.assertEqual(
             "test_iterator_obj(arg0: collections.abc.Iterator[object], arg1: list) -> collections.abc.Iterator[object]",
-            test_iterator_obj.__doc__.strip(),
+            (test_iterator_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_iterator_int(arg0: collections.abc.Iterator[int], arg1: list) -> collections.abc.Iterator[int]",
-            test_iterator_int.__doc__.strip(),
+            (test_iterator_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_iterator_cls(arg0: collections.abc.Iterator[test_amulet_pybind11_extensions.test_collections_.TestToken], arg1: list) -> collections.abc.Iterator[test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_iterator_cls.__doc__.strip(),
+            (test_iterator_cls.__doc__ or "").strip(),
         )
 
         def call_iterator(
             obj: Iterable, func: Callable[[Iterator, list], Iterator]
         ) -> None:
-            objs = []
+            objs: list[Any] = []
             it = iter(obj)
             it2 = func(it, objs)
             self.assertIs(it, it2)
@@ -72,22 +72,22 @@ class CollectionsTestCase(unittest.TestCase):
             test_iterator_cls,
         )
 
-        out = []
+        out: list[Any] = []
         with self.assertRaises(RuntimeError):
-            test_iterator_int(iter([1, 2, "test"]), out)
+            test_iterator_int(iter([1, 2, "test"]), out)  # type: ignore
         self.assertEqual([1, 2], out)
 
         with self.assertRaises(TypeError):
-            test_iterator_obj([])
+            test_iterator_obj([])  # type: ignore
 
         with self.assertRaises(TypeError):
-            test_iterator_obj(())
+            test_iterator_obj(())  # type: ignore
 
         with self.assertRaises(TypeError):
-            test_iterator_obj({})
+            test_iterator_obj({})  # type: ignore
 
         with self.assertRaises(TypeError):
-            test_iterator_obj(None)
+            test_iterator_obj(None)  # type: ignore
 
         class MyIterator:
             def __init__(self) -> None:
@@ -110,21 +110,21 @@ class CollectionsTestCase(unittest.TestCase):
     def test_iterable(self) -> None:
         self.assertEqual(
             "test_iterable_obj(arg0: collections.abc.Iterable[object], arg1: list) -> collections.abc.Iterable[object]",
-            test_iterable_obj.__doc__.strip(),
+            (test_iterable_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_iterable_int(arg0: collections.abc.Iterable[int], arg1: list) -> collections.abc.Iterable[int]",
-            test_iterable_int.__doc__.strip(),
+            (test_iterable_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_iterable_cls(arg0: collections.abc.Iterable[test_amulet_pybind11_extensions.test_collections_.TestToken], arg1: list) -> collections.abc.Iterable[test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_iterable_cls.__doc__.strip(),
+            (test_iterable_cls.__doc__ or "").strip(),
         )
 
         def call_iterable(
             obj: Iterable, func: Callable[[Iterable, list], Iterable]
         ) -> None:
-            objs = []
+            objs: list[Any] = []
             obj2 = func(obj, objs)
             self.assertIs(obj, obj2)
             self.assertEqual(list(obj), objs)
@@ -144,22 +144,22 @@ class CollectionsTestCase(unittest.TestCase):
             test_iterable_cls,
         )
 
-        out = []
+        out: list[Any] = []
         with self.assertRaises(RuntimeError):
-            test_iterable_int([1, 2, "test"], out)
+            test_iterable_int([1, 2, "test"], out)  # type: ignore
         self.assertEqual([1, 2], out)
 
         with self.assertRaises(TypeError):
-            test_iterable_obj(iter([]))
+            test_iterable_obj(iter([]))  # type: ignore
 
         with self.assertRaises(TypeError):
-            test_iterable_obj(iter(()))
+            test_iterable_obj(iter(()))  # type: ignore
 
         with self.assertRaises(TypeError):
-            test_iterable_obj(iter({}))
+            test_iterable_obj(iter({}))  # type: ignore
 
         with self.assertRaises(TypeError):
-            test_iterable_obj(None)
+            test_iterable_obj(None)  # type: ignore
 
         class MyIterable:
             def __init__(self) -> None:
@@ -172,27 +172,28 @@ class CollectionsTestCase(unittest.TestCase):
                 return len(self.values)
 
         out = []
-        test_iterable_obj(MyIterable(), out)
+        # This is iterable via size and getitem. Mypy does not like that.
+        test_iterable_obj(MyIterable(), out)  # type: ignore
         self.assertEqual([None, 1, "2", 3.0], out)
 
     def test_sequence(self) -> None:
         self.assertEqual(
             "test_sequence_obj(arg0: collections.abc.Sequence[object], arg1: list) -> collections.abc.Sequence[object]",
-            test_sequence_obj.__doc__.strip(),
+            (test_sequence_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_sequence_int(arg0: collections.abc.Sequence[int], arg1: list) -> collections.abc.Sequence[int]",
-            test_sequence_int.__doc__.strip(),
+            (test_sequence_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_sequence_cls(arg0: collections.abc.Sequence[test_amulet_pybind11_extensions.test_collections_.TestToken], arg1: list) -> collections.abc.Sequence[test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_sequence_cls.__doc__.strip(),
+            (test_sequence_cls.__doc__ or "").strip(),
         )
 
         def call_sequence(
             obj: Sequence, func: Callable[[Sequence, list], Sequence]
         ) -> None:
-            objs = []
+            objs: list[Any] = []
             obj2 = func(obj, objs)
             self.assertIs(obj, obj2)
             self.assertEqual(list(obj), objs)
@@ -206,79 +207,79 @@ class CollectionsTestCase(unittest.TestCase):
         call_sequence([TestToken(1), TestToken(2), TestToken(3)], test_sequence_cls)
         call_sequence((TestToken(1), TestToken(2), TestToken(3)), test_sequence_cls)
 
-        out = []
+        out: list[Any] = []
         with self.assertRaises(TypeError):
-            test_sequence_int(None, out)
+            test_sequence_int(None, out)  # type: ignore
         self.assertEqual([], out)
 
     def test_map(self) -> None:
         self.assertEqual(
             "test_map_obj(arg0: collections.abc.Mapping[int, object]) -> collections.abc.Mapping[int, object]",
-            test_map_obj.__doc__.strip(),
+            (test_map_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_map_int(arg0: collections.abc.Mapping[int, int]) -> collections.abc.Mapping[int, int]",
-            test_map_int.__doc__.strip(),
+            (test_map_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_map_cls(arg0: collections.abc.Mapping[int, test_amulet_pybind11_extensions.test_collections_.TestToken]) -> collections.abc.Mapping[int, test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_map_cls.__doc__.strip(),
+            (test_map_cls.__doc__ or "").strip(),
         )
 
     def test_mutable_map(self) -> None:
         self.assertEqual(
             "test_mutable_map_obj(arg0: collections.abc.MutableMapping[int, object]) -> collections.abc.MutableMapping[int, object]",
-            test_mutable_map_obj.__doc__.strip(),
+            (test_mutable_map_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_mutable_map_int(arg0: collections.abc.MutableMapping[int, int]) -> collections.abc.MutableMapping[int, int]",
-            test_mutable_map_int.__doc__.strip(),
+            (test_mutable_map_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_mutable_map_cls(arg0: collections.abc.MutableMapping[int, test_amulet_pybind11_extensions.test_collections_.TestToken]) -> collections.abc.MutableMapping[int, test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_mutable_map_cls.__doc__.strip(),
+            (test_mutable_map_cls.__doc__ or "").strip(),
         )
 
     def test_keys_view(self) -> None:
         self.assertEqual(
             "test_keys_view_obj(arg0: collections.abc.KeysView[object]) -> collections.abc.KeysView[object]",
-            test_keys_view_obj.__doc__.strip(),
+            (test_keys_view_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_keys_view_int(arg0: collections.abc.KeysView[int]) -> collections.abc.KeysView[int]",
-            test_keys_view_int.__doc__.strip(),
+            (test_keys_view_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_keys_view_cls(arg0: collections.abc.KeysView[test_amulet_pybind11_extensions.test_collections_.TestToken]) -> collections.abc.KeysView[test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_keys_view_cls.__doc__.strip(),
+            (test_keys_view_cls.__doc__ or "").strip(),
         )
 
     def test_values_view(self) -> None:
         self.assertEqual(
             "test_values_view_obj(arg0: collections.abc.ValuesView[object]) -> collections.abc.ValuesView[object]",
-            test_values_view_obj.__doc__.strip(),
+            (test_values_view_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_values_view_int(arg0: collections.abc.ValuesView[int]) -> collections.abc.ValuesView[int]",
-            test_values_view_int.__doc__.strip(),
+            (test_values_view_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_values_view_cls(arg0: collections.abc.ValuesView[test_amulet_pybind11_extensions.test_collections_.TestToken]) -> collections.abc.ValuesView[test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_values_view_cls.__doc__.strip(),
+            (test_values_view_cls.__doc__ or "").strip(),
         )
 
     def test_items_view(self) -> None:
         self.assertEqual(
             "test_items_view_obj(arg0: collections.abc.ItemsView[int, object]) -> collections.abc.ItemsView[int, object]",
-            test_items_view_obj.__doc__.strip(),
+            (test_items_view_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_items_view_int(arg0: collections.abc.ItemsView[int, int]) -> collections.abc.ItemsView[int, int]",
-            test_items_view_int.__doc__.strip(),
+            (test_items_view_int.__doc__ or "").strip(),
         )
         self.assertEqual(
             "test_items_view_cls(arg0: collections.abc.ItemsView[int, test_amulet_pybind11_extensions.test_collections_.TestToken]) -> collections.abc.ItemsView[int, test_amulet_pybind11_extensions.test_collections_.TestToken]",
-            test_items_view_cls.__doc__.strip(),
+            (test_items_view_cls.__doc__ or "").strip(),
         )
 
 
