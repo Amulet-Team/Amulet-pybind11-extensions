@@ -263,6 +263,18 @@ namespace pybind11_extensions {
             Sequence<pybind11::object>::register_cls(cls);
         }
     } // namespace collections
+
+    inline void bounds_check(const size_t& size, Py_ssize_t& index)
+    {
+        if (index < 0) {
+            index += size;
+            if (index < 0) {
+                throw pybind11::index_error();
+            }
+        } else if (index >= size) {
+            throw pybind11::index_error();
+        }
+    }
 } // namespace pybind11_extensions
 } // namespace Amulet
 
