@@ -63,6 +63,28 @@ namespace pybind11_extensions {
             }
 
             template <typename ClsT>
+            static void def_repr(ClsT cls)
+            {
+                cls.def(
+                    "__repr__",
+                    [](pybind11::object self) {
+                        std::string repr = "[";
+                        bool is_first = true;
+                        for (auto it = self.begin(); it != self.end(); it++) {
+                            if (is_first) {
+                                is_first = false;
+                            } else {
+                                repr += ", ";
+                            }
+                            repr += pybind11::repr(*it);
+                        }
+                        repr += "]";
+                        return repr;
+                    }
+                );
+            }
+
+            template <typename ClsT>
             static void def_getitem_slice(ClsT cls)
             {
                 cls.def(
