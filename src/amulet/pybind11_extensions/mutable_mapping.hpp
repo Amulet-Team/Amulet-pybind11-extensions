@@ -258,14 +258,16 @@ namespace pybind11_extensions {
                     KT& key,
                     VT& value) {
                     self.map.insert_or_assign(key, value);
-                });
+                },
+                pybind11::arg("key"), pybind11::arg("value"));
             cls.def(
                 "__delitem__",
                 [](
                     MapWrapperT& self,
                     KT& key) {
                     self.map.erase(key);
-                });
+                },
+                pybind11::arg("key"));
             cls.def(
                 "clear",
                 [](MapWrapperT& self) {
