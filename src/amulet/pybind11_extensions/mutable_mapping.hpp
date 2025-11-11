@@ -282,8 +282,8 @@ namespace pybind11_extensions {
         template <typename MapWrapperT>
         void bind_mutable_mapping()
         {
-            pybind11::class_<MapWrapperT> Mapping(pybind11::handle(), "MutableMapping", pybind11::module_local());
-            bind_mutable_mapping_to<MapWrapperT>(Mapping);
+            pybind11::class_<MapWrapperT> MutableMapping(pybind11::handle(), "MutableMapping", pybind11::module_local());
+            bind_mutable_mapping_to<MapWrapperT>(MutableMapping);
         }
     }
 
