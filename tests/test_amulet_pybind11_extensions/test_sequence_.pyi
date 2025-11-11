@@ -3,7 +3,7 @@ from __future__ import annotations
 import collections.abc
 import typing
 
-__all__: list[str] = ["TestSequence"]
+__all__: list[str] = ["TestSequence", "get_sequence"]
 
 class TestSequence:
     def __contains__(self, item: typing.Any) -> bool: ...
@@ -22,3 +22,5 @@ class TestSequence:
         start: typing.SupportsInt = 0,
         stop: typing.SupportsInt = 9223372036854775807,
     ) -> int: ...
+
+def get_sequence() -> collections.abc.Sequence[int]: ...

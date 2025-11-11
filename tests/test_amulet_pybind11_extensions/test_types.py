@@ -8,7 +8,7 @@ class TypesTestCase(unittest.TestCase):
 
         self.assertEqual(
             "func() -> types.NotImplementedType",
-            func.__doc__.strip(),
+            (func.__doc__ or "").strip(),
         )
         self.assertIs(NotImplementedType, func())
 

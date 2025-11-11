@@ -10,7 +10,7 @@ class IteratorTestCase(unittest.TestCase):
         self.assertEqual(1, next(it))
         self.assertEqual(
             "get_iterator() -> collections.abc.Iterator[int]",
-            get_iterator.__doc__.strip(),
+            (get_iterator.__doc__ or "").strip(),
         )
 
 

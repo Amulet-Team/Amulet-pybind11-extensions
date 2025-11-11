@@ -16,15 +16,15 @@ class BuiltinsTestCase(unittest.TestCase):
         self.assertIs(a, func3(a))
         self.assertEqual(
             "func1(arg0: test_amulet_pybind11_extensions.test_builtins_.MyPyClass) -> test_amulet_pybind11_extensions.test_builtins_.MyPyClass",
-            func1.__doc__.strip(),
+            (func1.__doc__ or "").strip(),
         )
         self.assertEqual(
             "func2(arg0: test_amulet_pybind11_extensions.test_builtins_.MyPyClass) -> test_amulet_pybind11_extensions.test_builtins_.MyPyClass",
-            func2.__doc__.strip(),
+            (func2.__doc__ or "").strip(),
         )
         self.assertEqual(
             "func3(arg0: test_amulet_pybind11_extensions.test_builtins_.MyPyClass) -> test_amulet_pybind11_extensions.test_builtins_.MyPyClass",
-            func3.__doc__.strip(),
+            (func3.__doc__ or "").strip(),
         )
 
 
