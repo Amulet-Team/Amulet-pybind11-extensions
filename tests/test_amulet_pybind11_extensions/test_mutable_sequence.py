@@ -178,6 +178,30 @@ class SequenceTestCase(unittest.TestCase):
         self.assertIsInstance(sequence, Sequence)
         self.assertIsInstance(sequence, MutableSequence)
 
+    def test_make_mutable_sequence(self) -> None:
+        from test_amulet_pybind11_extensions.test_mutable_sequence_ import get_mutable_sequence
+
+        sequence = get_mutable_sequence()
+        self.assertIsInstance(sequence, Sequence)
+        self.assertIsInstance(sequence, MutableSequence)
+        self.assertEqual([1, 2, 3], list(sequence))
+        self.assertEqual(1, sequence[0])
+        self.assertEqual(2, sequence[1])
+        self.assertEqual(3, sequence[2])
+        self.assertEqual(1, sequence[-3])
+        self.assertEqual(2, sequence[-2])
+        self.assertEqual(3, sequence[-1])
+        with self.assertRaises(IndexError):
+            sequence[-4]
+        with self.assertRaises(IndexError):
+            sequence[3]
+
+        sequence[0] = 10
+        sequence[1] = 20
+        sequence[2] = 30
+        self.assertEqual([10, 20, 30], list(sequence))
+        self.assertEqual([10, 20, 30], list(get_mutable_sequence()))
+
 
 if __name__ == "__main__":
     unittest.main()

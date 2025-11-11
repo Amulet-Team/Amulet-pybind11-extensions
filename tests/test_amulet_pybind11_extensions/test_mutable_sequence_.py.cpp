@@ -71,6 +71,8 @@ public:
 };
 }
 
+static std::vector<int> GlobalMutableSequence { 1, 2, 3 };
+
 void init_test_mutable_sequence(py::module m_parent)
 {
     auto m = m_parent.def_submodule("test_mutable_sequence_");
@@ -98,4 +100,8 @@ void init_test_mutable_sequence(py::module m_parent)
     Sequence::def_remove(TestMutableSequence);
     Sequence::def_iadd(TestMutableSequence);
     Sequence::register_cls(TestMutableSequence);
+
+    m.def(
+        "get_mutable_sequence",
+        []() { return Amulet::pybind11_extensions::make_mutable_sequence(GlobalMutableSequence); });
 }
