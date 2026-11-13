@@ -19,6 +19,8 @@ public:
 };
 }
 
+static const std::vector<int> GlobalSequence { 1, 2, 3 };
+
 void init_test_sequence(py::module m_parent)
 {
     auto m = m_parent.def_submodule("test_sequence_");
@@ -35,4 +37,8 @@ void init_test_sequence(py::module m_parent)
     Sequence::def_index(TestSequence);
     Sequence::def_count(TestSequence);
     Sequence::register_cls(TestSequence);
+
+    m.def(
+        "get_sequence", 
+        []() { return Amulet::pybind11_extensions::make_sequence(GlobalSequence); });
 }

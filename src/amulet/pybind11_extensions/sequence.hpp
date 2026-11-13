@@ -63,6 +63,28 @@ namespace pybind11_extensions {
             }
 
             template <typename ClsT>
+            static void def_repr(ClsT cls)
+            {
+                cls.def(
+                    "__repr__",
+                    [](pybind11::object self) {
+                        std::string repr = "[";
+                        bool is_first = true;
+                        for (auto it = self.begin(); it != self.end(); it++) {
+                            if (is_first) {
+                                is_first = false;
+                            } else {
+                                repr += ", ";
+                            }
+                            repr += pybind11::repr(*it);
+                        }
+                        repr += "]";
+                        return repr;
+                    }
+                );
+            }
+
+            template <typename ClsT>
             static void def_getitem_slice(ClsT cls)
             {
                 cls.def(
@@ -241,6 +263,83 @@ namespace pybind11_extensions {
             Sequence<pybind11::object>::register_cls(cls);
         }
     } // namespace collections
+
+    inline void bounds_check(const size_t& size, Py_ssize_t& index)
+    {
+        if (index < 0) {
+            index += size;
+            if (index < 0) {
+                throw pybind11::index_error();
+            }
+        } else if (index >= size) {
+            throw pybind11::index_error();
+        }
+    }
+
+    namespace detail {
+        template <typename SequenceT>
+        class SequenceWrapper {
+        public:
+            using SequenceType = SequenceT;
+
+            SequenceT& sequence;
+
+            SequenceWrapper(SequenceT& sequence)
+                : sequence(sequence)
+            {
+            }
+        };
+
+        template <typename SequenceWrapperT, typename ClsT>
+        void bind_sequence_to(ClsT& cls)
+        {
+            using T = typename SequenceWrapperT::SequenceType::value_type;
+            cls.def(
+                "__getitem__",
+                [](
+                    SequenceWrapperT& self,
+                    Py_ssize_t index) {
+                    bounds_check(self.sequence.size(), index);
+                    return self.sequence[index];
+                },
+                pybind11::arg("index"));
+            cls.def(
+                "__len__",
+                [](SequenceWrapperT& self) {
+                    return self.sequence.size();
+                });
+            
+            using Sequence = collections::Sequence<T>;
+            Sequence::def_repr(cls);
+            Sequence::def_getitem_slice(cls);
+            Sequence::def_contains(cls);
+            Sequence::def_iter(cls);
+            Sequence::def_reversed(cls);
+            Sequence::def_index(cls);
+            Sequence::def_count(cls);
+            Sequence::register_cls(cls);
+        }
+
+        template <typename SequenceWrapperT>
+        void bind_sequence()
+        {
+            pybind11::class_<SequenceWrapperT> Sequence(pybind11::handle(), "Sequence", pybind11::module_local());
+            bind_sequence_to<SequenceWrapperT>(Sequence);
+        }
+    }
+
+    // Make a python class that models collections.abc.Sequence around a C++ vector-like object.
+    // The caller must tie the lifespan of the sequence to the lifespan of the returned object.
+    template <typename SequenceT>
+    collections::Sequence<typename SequenceT::value_type> make_sequence(SequenceT& sequence)
+    {
+        using SequenceWrapperT = detail::SequenceWrapper<SequenceT>;
+        if (!is_class_bound<SequenceWrapperT>()) {
+            detail::bind_sequence<SequenceWrapperT>();
+        }
+        return pybind11::cast(SequenceWrapperT(sequence));
+    }
+
 } // namespace pybind11_extensions
 } // namespace Amulet
 

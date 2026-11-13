@@ -258,14 +258,16 @@ namespace pybind11_extensions {
                     KT& key,
                     VT& value) {
                     self.map.insert_or_assign(key, value);
-                });
+                },
+                pybind11::arg("key"), pybind11::arg("value"));
             cls.def(
                 "__delitem__",
                 [](
                     MapWrapperT& self,
                     KT& key) {
                     self.map.erase(key);
-                });
+                },
+                pybind11::arg("key"));
             cls.def(
                 "clear",
                 [](MapWrapperT& self) {
@@ -282,8 +284,8 @@ namespace pybind11_extensions {
         template <typename MapWrapperT>
         void bind_mutable_mapping()
         {
-            pybind11::class_<MapWrapperT> Mapping(pybind11::handle(), "MutableMapping", pybind11::module_local());
-            bind_mutable_mapping_to<MapWrapperT>(Mapping);
+            pybind11::class_<MapWrapperT> MutableMapping(pybind11::handle(), "MutableMapping", pybind11::module_local());
+            bind_mutable_mapping_to<MapWrapperT>(MutableMapping);
         }
     }
 

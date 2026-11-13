@@ -124,6 +124,87 @@ namespace pybind11_extensions {
             }
         };
     } // namespace collections
+
+    namespace detail {
+        template <typename SequenceT>
+        class MutableSequenceWrapper {
+        public:
+            using SequenceType = SequenceT;
+
+            SequenceT& sequence;
+
+            MutableSequenceWrapper(SequenceT& sequence)
+                : sequence(sequence)
+            {
+            }
+        };
+
+        template <typename SequenceWrapperT, typename ClsT>
+        void bind_mutable_sequence_to(ClsT& cls)
+        {
+            using T = typename SequenceWrapperT::SequenceType::value_type;
+            bind_sequence_to<SequenceWrapperT>(cls);
+            cls.def(
+                "__setitem__",
+                [](
+                    SequenceWrapperT& self,
+                    Py_ssize_t index,
+                    T& value) {
+                    bounds_check(self.sequence.size(), index);
+                    self.sequence[index] = value;
+                },
+                pybind11::arg("index"), pybind11::arg("value"));
+            cls.def(
+                "__delitem__",
+                [](
+                    SequenceWrapperT& self,
+                    Py_ssize_t index) {
+                    bounds_check(self.sequence.size(), index);
+                    self.sequence.erase(self.sequence.begin() + index);
+                },
+                pybind11::arg("index"));
+            cls.def(
+                "insert",
+                [](
+                    SequenceWrapperT& self,
+                    Py_ssize_t index,
+                    T& value) {
+                    bounds_check(self.sequence.size(), index);
+                    self.sequence.insert(self.sequence.begin() + index, value);
+                },
+                pybind11::arg("index"), pybind11::arg("value"));
+
+            using MutableSequence = collections::MutableSequence<T>;
+            MutableSequence::def_append(cls);
+            MutableSequence::def_clear(cls);
+            MutableSequence::def_reverse(cls);
+            MutableSequence::def_extend(cls);
+            MutableSequence::def_pop(cls);
+            MutableSequence::def_remove(cls);
+            MutableSequence::def_iadd(cls);
+            MutableSequence::register_cls(cls);
+        }
+
+        template <typename SequenceWrapperT>
+        void bind_mutable_sequence()
+        {
+            pybind11::class_<SequenceWrapperT> MutableSequence(pybind11::handle(), "MutableSequence", pybind11::module_local());
+            bind_mutable_sequence_to<SequenceWrapperT>(MutableSequence);
+        }
+    }
+
+    // Make a python class that models collections.abc.MutableSequence around a C++ vector-like object.
+    // The caller must tie the lifespan of the sequence to the lifespan of the returned object.
+    template <typename SequenceT>
+    collections::MutableSequence<typename SequenceT::value_type> make_mutable_sequence(SequenceT& sequence)
+    {
+        using SequenceWrapperT = detail::MutableSequenceWrapper<SequenceT>;
+        if (!is_class_bound<SequenceWrapperT>()) {
+            detail::bind_mutable_sequence<SequenceWrapperT>();
+        }
+        return pybind11::cast(SequenceWrapperT(sequence));
+    }
+
 } // namespace pybind11_extensions
 } // namespace Amulet
 
