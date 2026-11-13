@@ -8,7 +8,6 @@ import pybind11_stubgen
 from pybind11_stubgen.structs import Identifier
 from pybind11_stubgen.parser.mixins.filter import FilterClassMembers
 
-
 ForwardRefPattern = re.compile(r"ForwardRef\('(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*)'\)")
 
 QuotePattern = re.compile(r"'(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*)'")
@@ -21,27 +20,9 @@ def fix_value(value: str) -> str:
     return value
 
 
-UnionPattern = re.compile(
-    r"^(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*): (types\.UnionType|typing\._UnionGenericAlias)\s*#\s*value = (?P<value>.*)$",
-    flags=re.MULTILINE,
+VersionPattern = re.compile(
+    r"^(?P<var>\s*[a-zA-Z0-9_]*): str = '.*?'", flags=re.MULTILINE
 )
-
-
-def union_sub_func(match: re.Match[str]) -> str:
-    return f'{match.group("variable")}: typing.TypeAlias = {fix_value(match.group("value"))}'
-
-
-ClassVarUnionPattern = re.compile(
-    r"(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*): typing\.ClassVar\[types\.UnionType]\s*#\s*value = (?P<value>.*)$",
-    flags=re.MULTILINE,
-)
-
-
-def class_var_union_sub_func(match: re.Match) -> str:
-    return f'{match.group("variable")}: typing.TypeAlias = {fix_value(match.group("value"))}'
-
-
-VersionPattern = re.compile(r"(?P<var>[a-zA-Z0-9_].*): str = '.*?'")
 
 
 def str_sub_func(match: re.Match) -> str:
@@ -93,15 +74,6 @@ def eq_sub_func(match: re.Match[str]) -> str:
         )
 
 
-GenericAliasPattern = re.compile(
-    r"(?P<variable>[a-zA-Z0-9]+): types.GenericAlias\s*# value = (?P<value>.*)"
-)
-
-
-def generic_alias_sub_func(match: re.Match) -> str:
-    return f'{match.group("variable")}: typing.TypeAlias = {fix_value(match.group("value"))}'
-
-
 def get_module_path(name: str) -> str:
     spec = importlib.util.find_spec(name)
     assert spec is not None
@@ -150,14 +122,20 @@ def patch_stubgen() -> None:
 def main() -> None:
     root_path = os.path.dirname(os.path.dirname(__file__))
     tests_path = os.path.join(root_path, "tests")
-    test_amulet_pybind11_extensions_path = os.path.join(tests_path, "test_amulet_pybind11_extensions")
+    test_amulet_pybind11_extensions_path = os.path.join(
+        tests_path, "test_amulet_pybind11_extensions"
+    )
 
     # make tests importable
     sys.path.append(tests_path)
 
     # out_dir, module_dir, module_name
     modules: list[tuple[str, str, str]] = [
-        (tests_path, test_amulet_pybind11_extensions_path, "test_amulet_pybind11_extensions"),
+        (
+            tests_path,
+            test_amulet_pybind11_extensions_path,
+            "test_amulet_pybind11_extensions",
+        ),
     ]
 
     # Remove all existing stub files
@@ -214,11 +192,8 @@ def main() -> None:
     for stub_path in stub_paths:
         with open(stub_path, encoding="utf-8") as f:
             pyi = f.read()
-        pyi = UnionPattern.sub(union_sub_func, pyi)
-        pyi = ClassVarUnionPattern.sub(class_var_union_sub_func, pyi)
         pyi = VersionPattern.sub(str_sub_func, pyi)
         pyi = CompilerConfigPattern.sub(compiler_config_sub_func, pyi)
-        pyi = GenericAliasPattern.sub(generic_alias_sub_func, pyi)
         pyi = pyi.replace(
             "__hash__: typing.ClassVar[None] = None",
             "__hash__: typing.ClassVar[None] = None  # type: ignore",

@@ -41,4 +41,7 @@ void init_test_builtins(py::module m_parent)
     m.def("func1", &func1);
     m.def("func2", &func2);
     m.def("func3", &func3);
+
+    m.def("args1", [](pyext::Args<int> args, pyext::KWArgs<int> kwargs) {});
+    m.def("args2", [](pyext::Args<int, "numbers"> args, pyext::KWArgs<int, "kw_numbers"> kwargs) {});
 }
