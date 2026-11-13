@@ -30,10 +30,12 @@ class BuiltinsTestCase(unittest.TestCase):
         )
 
         self.assertEqual(
-            "args1(*args: typing.SupportsInt | typing.SupportsIndex, **kwargs: typing.SupportsInt | typing.SupportsIndex) -> None", args1.__doc__.strip()
+            "args1(*args: typing.SupportsInt | typing.SupportsIndex, **kwargs: typing.SupportsInt | typing.SupportsIndex) -> None",
+            args1.__doc__.strip(),
         )
         self.assertEqual(
-            "args2(*numbers: typing.SupportsInt | typing.SupportsIndex, **kw_numbers: typing.SupportsInt | typing.SupportsIndex) -> None", args2.__doc__.strip()
+            "args2(*numbers: typing.SupportsInt | typing.SupportsIndex, **kw_numbers: typing.SupportsInt | typing.SupportsIndex) -> None",
+            args2.__doc__.strip(),
         )
 
 

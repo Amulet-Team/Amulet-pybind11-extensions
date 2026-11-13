@@ -57,7 +57,8 @@ def test_iterable_cls(
     arg0: collections.abc.Iterable[TestToken], arg1: list
 ) -> collections.abc.Iterable[TestToken]: ...
 def test_iterable_int(
-    arg0: collections.abc.Iterable[int], arg1: list
+    arg0: collections.abc.Iterable[typing.SupportsInt | typing.SupportsIndex],
+    arg1: list,
 ) -> collections.abc.Iterable[int]: ...
 def test_iterable_obj(
     arg0: collections.abc.Iterable[typing.Any], arg1: list
@@ -102,7 +103,8 @@ def test_sequence_cls(
     arg0: collections.abc.Sequence[TestToken], arg1: list
 ) -> collections.abc.Sequence[TestToken]: ...
 def test_sequence_int(
-    arg0: collections.abc.Sequence[int], arg1: list
+    arg0: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex],
+    arg1: list,
 ) -> collections.abc.Sequence[int]: ...
 def test_sequence_obj(
     arg0: collections.abc.Sequence[typing.Any], arg1: list

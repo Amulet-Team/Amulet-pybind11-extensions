@@ -73,7 +73,7 @@ class CollectionsTestCase(unittest.TestCase):
         )
 
         out: list[Any] = []
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(ValueError):
             test_iterator_int(iter([1, 2, "test"]), out)  # type: ignore
         self.assertEqual([1, 2], out)
 
@@ -113,7 +113,7 @@ class CollectionsTestCase(unittest.TestCase):
             (test_iterable_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
-            "test_iterable_int(arg0: collections.abc.Iterable[int], arg1: list) -> collections.abc.Iterable[int]",
+            "test_iterable_int(arg0: collections.abc.Iterable[typing.SupportsInt | typing.SupportsIndex], arg1: list) -> collections.abc.Iterable[int]",
             (test_iterable_int.__doc__ or "").strip(),
         )
         self.assertEqual(
@@ -182,7 +182,7 @@ class CollectionsTestCase(unittest.TestCase):
             (test_sequence_obj.__doc__ or "").strip(),
         )
         self.assertEqual(
-            "test_sequence_int(arg0: collections.abc.Sequence[int], arg1: list) -> collections.abc.Sequence[int]",
+            "test_sequence_int(arg0: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], arg1: list) -> collections.abc.Sequence[int]",
             (test_sequence_int.__doc__ or "").strip(),
         )
         self.assertEqual(
