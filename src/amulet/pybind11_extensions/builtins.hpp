@@ -34,6 +34,15 @@ namespace pybind11_extensions {
     class PyObjectCpp : public pybind11::object {
         PYBIND11_OBJECT_DEFAULT(PyObjectCpp, object, PyObject_Type)
             using object::object;
+
+    template <typename T, detail::FixedString Var = "args">
+    class Args : public pybind11::args {
+        using pybind11::args::args;
+    };
+
+    template <typename T, detail::FixedString Var = "kwargs">
+    class KWArgs : public pybind11::kwargs {
+        using pybind11::kwargs::kwargs;
     };
 } // namespace pybind11_extensions
 } // namespace Amulet
@@ -49,6 +58,26 @@ namespace detail {
     template <typename cppT>
     struct handle_type_name<Amulet::pybind11_extensions::PyObjectCpp<cppT>> {
         static constexpr auto name = make_caster<cppT>::name;
+    };
+
+    template <typename T, Amulet::pybind11_extensions::detail::FixedString Var>
+    struct handle_type_name<Amulet::pybind11_extensions::Args<T, Var>> {
+        static constexpr auto name
+            = io_name("*", "")
+            + io_name(Var.buf, "")
+            + io_name(": ", "tuple[")
+            + make_caster<T>::name 
+            + io_name("", ", ...]");
+    };
+
+    template <typename T, Amulet::pybind11_extensions::detail::FixedString Var>
+    struct handle_type_name<Amulet::pybind11_extensions::KWArgs<T, Var>> {
+        static constexpr auto name
+            = io_name("**", "") 
+            + io_name(Var.buf, "") 
+            + io_name(": ", "dict[str, ") 
+            + make_caster<T>::name 
+            + io_name("", "]");
     };
 } // namespace detail
 } // namespace pybind11
