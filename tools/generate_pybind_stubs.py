@@ -8,7 +8,6 @@ import pybind11_stubgen
 from pybind11_stubgen.structs import Identifier
 from pybind11_stubgen.parser.mixins.filter import FilterClassMembers
 
-
 ForwardRefPattern = re.compile(r"ForwardRef\('(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*)'\)")
 
 QuotePattern = re.compile(r"'(?P<variable>[a-zA-Z_][a-zA-Z0-9_]*)'")
@@ -150,14 +149,20 @@ def patch_stubgen() -> None:
 def main() -> None:
     root_path = os.path.dirname(os.path.dirname(__file__))
     tests_path = os.path.join(root_path, "tests")
-    test_amulet_pybind11_extensions_path = os.path.join(tests_path, "test_amulet_pybind11_extensions")
+    test_amulet_pybind11_extensions_path = os.path.join(
+        tests_path, "test_amulet_pybind11_extensions"
+    )
 
     # make tests importable
     sys.path.append(tests_path)
 
     # out_dir, module_dir, module_name
     modules: list[tuple[str, str, str]] = [
-        (tests_path, test_amulet_pybind11_extensions_path, "test_amulet_pybind11_extensions"),
+        (
+            tests_path,
+            test_amulet_pybind11_extensions_path,
+            "test_amulet_pybind11_extensions",
+        ),
     ]
 
     # Remove all existing stub files
