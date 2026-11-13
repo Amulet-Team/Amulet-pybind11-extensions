@@ -42,8 +42,5 @@ void init_module(py::module m){
 }
 
 PYBIND11_MODULE(_test_amulet_pybind11_extensions, m) {
-    py::options options;
-    options.disable_function_signatures();
-    m.def("init", &init_module, py::doc("init(arg0: types.ModuleType) -> None"));
-    options.enable_function_signatures();
+    m.def("init", &init_module);
 }

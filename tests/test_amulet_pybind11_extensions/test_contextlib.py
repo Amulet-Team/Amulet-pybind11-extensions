@@ -12,7 +12,7 @@ class ContextLibTestCase(unittest.TestCase):
     def test_contextlib(self) -> None:
         self.assertEqual(
             "func() -> contextlib.AbstractContextManager[str, bool | None]",
-            func.__doc__.strip(),
+            (func.__doc__ or "").strip(),
         )
         self.assertEqual(0, test_contextlib.state)
         with func() as value:
