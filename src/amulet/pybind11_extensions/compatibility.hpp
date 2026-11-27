@@ -6,7 +6,7 @@
 
 static std::string get_version_top(std::string version)
 {
-    return version.substr(0, version.find('.', version.find('.') + 1));
+    return version.substr(0, version.find('.'));
 }
 
 namespace Amulet {
